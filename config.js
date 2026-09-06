@@ -1,0 +1,1 @@
+window.MAROCVOWS_CONFIG={supabaseUrl:'https://zhoapmabrzhdqjphbqgy.supabase.co',publishableKey:'sb_publishable_-oNdtRaYWhrmzsRtUY7YDQ_3xA3W7Si',communityFeaturesEnabled:false,brand:'MarocVows',domain:'https://www.marocvows.com'};
