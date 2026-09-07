@@ -17,7 +17,21 @@
 - [x] No advertising or behavioural tracking
 - [x] Community collection gated until privacy/auth launch checks are complete
 
-## Domain publishing — remaining manual infrastructure
+## Backend security — verified 7 Sep 2026
+
+- [x] Supabase project `morocco-wedding-guide` is active and healthy
+- [x] Production frontend uses the current Supabase publishable key, not a service-role secret
+- [x] RLS enabled on `reviews`, `vendor_photos` and `reports`
+- [x] Review/photo/report inserts restricted to authenticated owners
+- [x] Approved-only public reads for reviews and vendor photos
+- [x] One review per authenticated user/vendor enforced at database level
+- [x] Review, report and photo metadata have database length/status/value constraints
+- [x] `vendor-photos` bucket is private
+- [x] Vendor photo uploads limited to JPEG/PNG/WebP and 8 MB
+- [x] Supabase security advisor reports zero security lints
+- [x] Community features remain disabled in `config.js` until production launch gates pass
+
+## Domain publishing — remaining infrastructure
 
 - [ ] GitHub Settings → Pages → Deploy from a branch → `main` / `(root)`
 - [ ] GitHub Pages custom domain = `www.marocvows.com`
@@ -25,6 +39,8 @@
 - [ ] Apex `@` A records → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
 - [ ] Wait for DNS/certificate validation, then enable Enforce HTTPS
 - [ ] Confirm `https://marocvows.com` redirects to `https://www.marocvows.com`
+
+Verification note, 7 Sep 2026: `www.marocvows.com` and apex `marocvows.com` did not resolve from the verification runtime, so domain/DNS/Pages/certificate setup is still treated as incomplete.
 
 ## Before community accounts/reviews are enabled
 
@@ -37,8 +53,13 @@
 - [ ] Test review → pending → approved → stars
 - [ ] Test JPEG/PNG/WebP upload ≤ 8 MB → moderation → display
 - [ ] Test private report submission
-- [ ] Add/verify anti-abuse and rate limits before opening at scale
+- [ ] Verify anti-abuse and rate limits under real authenticated traffic before opening at scale
 - [ ] Only then change `communityFeaturesEnabled` to `true`
+
+## Tracking
+
+- [x] GitHub issue #1 created as the single P0 production launch gate
+- [x] Issue assigned to `yopisimoni` and labelled `launch` + `production`
 
 ## Expansion rule
 
