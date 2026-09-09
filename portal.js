@@ -1,7 +1,7 @@
 (()=>{
 const cfg=window.MAROCVOWS_CONFIG||{};
-const $=(s)=>document.querySelector(s);
-const $$=(s)=>[...document.querySelectorAll(s)];
+const $=(s,root=document)=>root.querySelector(s);
+const $$=(s,root=document)=>[...root.querySelectorAll(s)];
 let supabase=null;
 let user=null;
 
@@ -43,6 +43,8 @@ function renderAuthState(){
     if(gate){gate.hidden=false;gate.textContent='The MarocVows account portal is built but not publicly open yet. We are finishing the privacy/contact and production-authentication launch checks before collecting account data.';}
     if(authShell)authShell.hidden=true;
     if(memberShell)memberShell.hidden=true;
+    $$('[data-auth-only]').forEach(el=>el.hidden=true);
+    $$('[data-guest-only]').forEach(el=>el.hidden=true);
     return;
   }
 
@@ -56,7 +58,7 @@ function renderAuthState(){
   $$('[data-guest-only]').forEach(el=>el.hidden=!!user);
 
   if(user){
-    $$('input[data-account-email]').forEach(input=>{if(!input.value)input.value=user.email||'';});
+    $$('input[data-account-email]').forEach(input=>{input.value=user.email||'';input.readOnly=true;});
     loadMemberHistory();
   }
 }
@@ -64,10 +66,10 @@ function renderAuthState(){
 async function signUp(e){
   e.preventDefault();
   const form=e.currentTarget;
-  const email=form.querySelector('[name="email"]').value.trim();
-  const password=form.querySelector('[name="password"]').value;
-  const confirm=form.querySelector('[name="confirm_password"]')?.value;
-  const out=form.querySelector('.status');
+  const email=$('[name="email"]',form).value.trim();
+  const password=$('[name="password"]',form).value;
+  const confirm=$('[name="confirm_password"]',form)?.value;
+  const out=$('.status',form);
   if(password.length<8){status(out,'Use at least 8 characters for your password.','error');return;}
   if(confirm!==undefined&&password!==confirm){status(out,'Passwords do not match.','error');return;}
   try{
@@ -87,9 +89,9 @@ async function signUp(e){
 async function signIn(e){
   e.preventDefault();
   const form=e.currentTarget;
-  const email=form.querySelector('[name="email"]').value.trim();
-  const password=form.querySelector('[name="password"]').value;
-  const out=form.querySelector('.status');
+  const email=$('[name="email"]',form).value.trim();
+  const password=$('[name="password"]',form).value;
+  const out=$('.status',form);
   try{
     await loadSupabase();
     const {data,error}=await supabase.auth.signInWithPassword({email,password});
@@ -109,12 +111,12 @@ async function submitWeddingRequest(e){
   e.preventDefault();
   if(!portalEnabled()||!user)return;
   const form=e.currentTarget;
-  const out=form.querySelector('.status');
+  const out=$('.status',form);
   const services=$$('input[name="services"]:checked',form).map(x=>x.value);
   const payload={
     user_id:user.id,
     full_name:form.full_name.value.trim(),
-    email:form.email.value.trim(),
+    email:user.email||form.email.value.trim(),
     phone:form.phone.value.trim()||null,
     city:form.city.value.trim(),
     event_date:form.event_date.value||null,
@@ -130,6 +132,7 @@ async function submitWeddingRequest(e){
     if(error)throw error;
     form.reset();
     form.email.value=user.email||'';
+    form.email.readOnly=true;
     status(out,'Request received. MarocVows can now review your needs and help shortlist suitable wedding professionals.','success');
     loadMemberHistory();
   }catch(err){status(out,err?.message||'Could not send your request.','error');}
@@ -139,13 +142,13 @@ async function submitProvider(e){
   e.preventDefault();
   if(!portalEnabled()||!user)return;
   const form=e.currentTarget;
-  const out=form.querySelector('.status');
+  const out=$('.status',form);
   const payload={
     user_id:user.id,
     business_name:form.business_name.value.trim(),
     provider_type:form.provider_type.value,
     contact_name:form.contact_name.value.trim(),
-    email:form.email.value.trim(),
+    email:user.email||form.email.value.trim(),
     phone:form.phone.value.trim()||null,
     whatsapp:form.whatsapp.value.trim()||null,
     city:form.city.value.trim(),
@@ -162,6 +165,7 @@ async function submitProvider(e){
     if(error)throw error;
     form.reset();
     form.email.value=user.email||'';
+    form.email.readOnly=true;
     status(out,'Application received. It will stay private until MarocVows reviews the business details.','success');
     loadMemberHistory();
   }catch(err){status(out,err?.message||'Could not submit the application.','error');}
