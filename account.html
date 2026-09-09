@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MarocVows Account | Sign in or create an account</title>
+<meta name="description" content="Create or access a MarocVows account for wedding-help requests and wedding professional applications.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://www.marocvows.com/account.html">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<header class="site-header">
+<a class="brand" href="/"><span class="brand-mark">MV</span><span>MarocVows</span></a>
+<div class="header-actions"><a class="ghost-btn" href="wedding-help.html">Wedding help</a><a class="ghost-btn" href="provider-submit.html">For professionals</a></div>
+</header>
+<main class="legal-shell">
+<p class="eyebrow">Secure member portal</p>
+<h1>MarocVows account</h1>
+<p>Create one account to ask for wedding-planning help, submit your wedding business for review, and later manage community contributions when those features open.</p>
+<nav class="legal-nav"><a href="/">Home</a><a href="wedding-help.html">Get wedding help</a><a href="provider-submit.html">List your business</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
+<div id="portalGate" class="auth-note" hidden></div>
+<section id="authShell">
+<div class="legal-card">
+<h2>Create an account</h2>
+<form id="signUpForm" class="review-form">
+<label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<label>Password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
+<label>Confirm password<input name="confirm_password" type="password" autocomplete="new-password" minlength="8" required></label>
+<p class="tiny">Use at least 8 characters. By creating an account you agree to the Terms and acknowledge the Privacy Policy.</p>
+<div class="status"></div>
+<button class="primary-btn" type="submit">Create account</button>
+</form>
+</div>
+<div class="legal-card">
+<h2>Sign in</h2>
+<form id="signInForm" class="review-form">
+<label>Email address<input name="email" type="email" autocomplete="email" required></label>
+<label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+<div class="status"></div>
+<button class="primary-btn" type="submit">Sign in</button>
+</form>
+</div>
+</section>
+<section id="memberShell" hidden>
+<div class="legal-card">
+<h2>You are signed in</h2>
+<p>Account: <strong id="userEmail"></strong></p>
+<div class="hero-actions"><a class="primary-btn" href="wedding-help.html">Ask for wedding help</a><a class="primary-btn" href="provider-submit.html">Submit a wedding business</a><button id="signOut" class="secondary-btn" type="button">Sign out</button></div>
+</div>
+<div class="legal-card"><h2>Your wedding-help requests</h2><div id="requestHistory"></div></div>
+<div class="legal-card"><h2>Your provider applications</h2><div id="applicationHistory"></div></div>
+</section>
+</main>
+<footer><div><strong>MarocVows</strong><p>© 2026 · Morocco</p></div><nav class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Contact</a></nav></footer>
+<script src="config.js"></script><script src="portal.js"></script>
+</body>
+</html>
