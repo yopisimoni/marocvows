@@ -1,8 +1,6 @@
-name: Temporary MarocVows cPanel sync
+name: Manual MarocVows cPanel fallback deploy
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -15,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy latest MarocVows files to cPanel fallback hosting
+      - name: Deploy to MarocVows cPanel fallback hosting
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: server315.web-hosting.com
@@ -35,4 +33,5 @@ jobs:
             CNAME
             .nojekyll
 
-# Temporary one-time synchronization of the premium authentication redesign.
+# Production traffic should use the canonical public host.
+# This workflow is retained only as a manual fallback to avoid dual automatic deployments.
