@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Welcome to MarocVows</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="onboarding.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body class="onboarding-page" data-auth-page="account.html">
+<header class="site-header"><a class="brand" href="/"><span class="brand-mark">MV</span><span>MarocVows</span></a></header>
+<main class="welcome-shell">
+<div class="welcome-topbar">
+<div class="welcome-user"><span>Signed in as</span><strong id="memberEmail">Loading…</strong></div>
+<button id="signOutWelcome" class="welcome-signout" type="button">Sign out</button>
+</div>
+<section class="welcome-hero">
+<p class="eyebrow">Welcome to MarocVows</p>
+<h1 id="welcomeTitle">Tell us why you’re here.</h1>
+<p id="welcomeLead">One quick step helps MarocVows understand who you are and show you the right wedding experience.</p>
+</section>
+<section id="welcomeQuestion" class="welcome-question">
+<h2>What brings you to MarocVows?</h2>
+<div class="welcome-role-grid">
+<button class="welcome-role" type="button" data-role-choice="client" aria-pressed="false"><span class="welcome-role-icon">♡</span><strong>I’m planning a wedding or event</strong><span>I need help finding trusted wedding professionals and services.</span><em>Tell us what you need →</em></button>
+<button class="welcome-role" type="button" data-role-choice="provider" aria-pressed="false"><span class="welcome-role-icon">✦</span><strong>I provide wedding services</strong><span>I want couples to discover my business, team or professional service.</span><em>Tell us what you offer →</em></button>
+</div>
+</section>
+
+<form id="clientProfile" class="onboarding-card" hidden>
+<p class="eyebrow">Planning a celebration</p>
+<h2>What are you looking for?</h2>
+<p>This is not a booking form. It simply helps MarocVows understand your wedding and the services you may need.</p>
+<div class="onboarding-grid">
+<label>Your name<input name="full_name" maxlength="120" autocomplete="name" required></label>
+<label>City<input name="city" maxlength="100" autocomplete="address-level2" placeholder="Khénifra, Fès, Marrakech…" required></label>
+<label>Phone / WhatsApp (optional)<input name="phone" maxlength="40" autocomplete="tel"></label>
+<div><div class="choice-title">Event type</div><select name="event_type" required><option value="wedding">Wedding</option><option value="engagement">Engagement</option><option value="henna">Henna celebration</option><option value="party">Family party / celebration</option><option value="other">Other event</option></select></div>
+<label>Event date (optional)<input name="event_date" type="date"></label>
+<label>Approximate guests (optional)<input name="guest_count" type="number" min="1" max="5000" inputmode="numeric"></label>
+<div class="full"><div class="choice-title">What would you like help finding? Choose all that apply.</div><div class="service-grid">
+<label class="service-choice"><input type="checkbox" name="client_services" value="venue"> Venue / wedding hall</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="caterer"> Caterer</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="planner"> Wedding planner</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="negafa"> Negafa / traditional dressing</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="photographer"> Photographer</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="videographer"> Videographer</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="dj"> DJ</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="band"> Band / orchestra / traditional music</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="decorator"> Decoration</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="florist"> Flowers</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="cook"> Cook / kitchen team</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="beauty"> Hair / makeup / beauty</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="henna"> Henna artist</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="cake"> Cake / pastry</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="transport"> Cars / transport</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="rentals"> Furniture / equipment rental</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="invitations"> Invitations / guest gifts</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="entertainment"> Entertainment</label>
+<label class="service-choice"><input type="checkbox" name="client_services" value="other"> Something else</label>
+</div></div>
+</div>
+<div class="onboarding-actions"><button class="onboarding-save" type="submit">Save and continue</button><button id="changeRole" class="onboarding-change" type="button">Change choice</button><a id="clientContinue" class="onboarding-continue" href="wedding-help.html" hidden>Continue to wedding help →</a></div>
+</form>
+
+<form id="providerProfile" class="onboarding-card" hidden>
+<p class="eyebrow">Wedding professional</p>
+<h2>What do you offer?</h2>
+<p>Choose every service you provide. A business can offer more than one category.</p>
+<div class="onboarding-grid">
+<label>Your name<input name="full_name" maxlength="120" autocomplete="name" required></label>
+<label>Business / professional name<input name="business_name" maxlength="160" required></label>
+<label>Main city<input name="city" maxlength="100" placeholder="Khénifra, Fès, Marrakech…" required></label>
+<label>Phone / WhatsApp (optional)<input name="phone" maxlength="40" autocomplete="tel"></label>
+<label class="full">Where do you work? (optional)<input name="service_area" maxlength="240" placeholder="Example: Khénifra + nearby towns, all Morocco…"></label>
+<div class="full"><div class="choice-title">Services you offer — choose all that apply.</div><div class="service-grid">
+<label class="service-choice"><input type="checkbox" name="provider_types" value="venue"> Venue / wedding hall</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="caterer"> Caterer</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="planner"> Wedding planner / manager</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="negafa"> Negafa / traditional dressing</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="cook"> Cook / kitchen team</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="dj"> DJ</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="band"> Band / orchestra / traditional music</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="photographer"> Photographer</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="videographer"> Videographer</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="decorator"> Decoration</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="florist"> Florist</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="beauty"> Hair / makeup / beauty</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="henna"> Henna artist</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="cake"> Cake / pastry</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="transport"> Wedding cars / transport</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="rentals"> Furniture / equipment rental</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="invitations"> Invitations / guest gifts</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="entertainment"> Entertainment</label>
+<label class="service-choice"><input type="checkbox" name="provider_types" value="other"> Other wedding service</label>
+</div></div>
+</div>
+<div class="onboarding-actions"><button class="onboarding-save" type="submit">Save and continue</button><button id="changeRoleProvider" class="onboarding-change" type="button" onclick="document.getElementById('changeRole').click()">Change choice</button><a id="providerContinue" class="onboarding-continue" href="provider-submit.html" hidden>Continue to provider listing →</a></div>
+</form>
+<div id="onboardingStatus" class="onboarding-status"></div>
+<div class="welcome-research-note"><strong>Why these categories?</strong> MarocVows uses broad wedding-marketplace categories plus Morocco-specific services such as Negafa, henna, traditional music and wedding transport. Providers can select multiple services instead of being forced into one label.</div>
+</main>
+<footer><div><strong>MarocVows</strong><p>© 2026 · Morocco</p></div><nav class="footer-links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Contact</a></nav></footer>
+<script src="config.js"></script>
+<script src="onboarding.js"></script>
+</body>
+</html>
