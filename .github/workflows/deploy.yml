@@ -34,3 +34,5 @@ jobs:
             LAUNCH_CHECKLIST.md
             CNAME
             .nojekyll
+
+# Deployment connection verified; pushes to main publish the static site.
