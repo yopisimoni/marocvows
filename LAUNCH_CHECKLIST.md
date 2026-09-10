@@ -57,8 +57,8 @@ Verification note, 9 Sep 2026: GitHub Pages, DNS validation and HTTPS are config
 - [ ] Publish final operator/data-controller identity
 - [ ] Complete applicable privacy/CNDP and cross-border processing formalities
 - [ ] Update the Privacy Policy and Terms for wedding-help requests and provider applications
-- [ ] Set Supabase Auth Site URL to `https://www.marocvows.com/`
-- [ ] Add the required production redirect URL(s), including `https://www.marocvows.com/account.html`
+- [x] Set Supabase Auth Site URL to `https://www.marocvows.com/`
+- [x] Add production redirect URLs: `https://www.marocvows.com/account.html` and `https://www.marocvows.com/`
 - [ ] Test email/password account creation and email confirmation on desktop and mobile
 - [ ] Test email/password sign-in and sign-out
 - [ ] Test wedding request → private database row → user history
