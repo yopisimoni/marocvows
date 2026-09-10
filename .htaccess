@@ -3,4 +3,10 @@ DirectoryIndex index.html
 ErrorDocument 404 /404.html
 
 RewriteEngine On
+
+# Redirect the old query-string vendor URL to the clean public URL.
+RewriteCond %{THE_REQUEST} \s/+vendor-profile\.html\?slug=([A-Za-z0-9-]+) [NC]
+RewriteRule ^vendor-profile\.html$ /vendors/%1/ [R=301,L,NE,QSD]
+
+# Internally serve clean vendor URLs from the shared profile template.
 RewriteRule ^vendors/([a-z0-9-]+)/?$ /vendor-profile.html?slug=$1 [L,QSA]
