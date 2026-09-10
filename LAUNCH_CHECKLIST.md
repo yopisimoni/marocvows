@@ -19,7 +19,7 @@
 - [x] `account.html`, `wedding-help.html` and `provider-submit.html` built as prelaunch/noindex pages
 - [x] Community and portal data collection remain gated until privacy/auth launch checks are complete
 
-## Backend security — verified 9 Sep 2026
+## Backend security — verified 10 Sep 2026
 
 - [x] Supabase project `morocco-wedding-guide` is active and healthy
 - [x] Production frontend uses the current Supabase publishable key, not a service-role secret
@@ -33,7 +33,8 @@
 - [x] Added `wedding_requests` with authenticated-owner RLS policies
 - [x] Added `provider_applications` with authenticated-owner RLS policies and moderation status
 - [x] Provider categories include caterer, venue, planner, cook, DJ, photo/video, decor, music, florist, beauty, henna, transport, cake/pastry, rentals and other
-- [x] Supabase security advisor reports zero security lints after the new schema migration
+- [x] Optimized new RLS policies to avoid per-row `auth.uid()` reevaluation warnings
+- [x] Supabase security advisor reports zero security lints
 - [x] Community features remain disabled in `config.js`
 - [x] New account/submission portal remains disabled with `portalFeaturesEnabled:false` until production launch gates pass
 
@@ -48,15 +49,17 @@
 - [ ] Confirm `https://www.marocvows.com/` returns the live MarocVows homepage after propagation
 - [ ] Confirm `https://marocvows.com` redirects to `https://www.marocvows.com/` after propagation
 
-Verification note, 9 Sep 2026: GitHub Pages, DNS validation and HTTPS are configured. The apex domain briefly returned GitHub's generic 404 during propagation, so final live redirect verification is still required before Google submission.
+Verification note: GitHub Pages, DNS validation and HTTPS are configured. Final public URL and apex redirect verification are still required before Google submission.
 
 ## Before account/submission portal is enabled
 
 - [x] Create monitored MarocVows contact/privacy emails: `hello@marocvows.com` and `privacy@marocvows.com`
 - [x] Publish those monitored addresses on the Contact and Privacy pages
-- [ ] Publish final operator/data-controller identity
-- [ ] Complete applicable privacy/CNDP and cross-border processing formalities
-- [ ] Update the Privacy Policy and Terms for wedding-help requests and provider applications
+- [x] Publish project identity: MarocVows is founded and managed by Simohamed Amara in Morocco
+- [ ] Confirm final legal data-controller designation and complete any applicable Moroccan privacy/CNDP and cross-border processing formalities before public account collection at scale
+- [x] Update Privacy Policy for account data, wedding-help requests, provider applications, service providers, sharing and retention
+- [x] Update Terms for wedding guidance, provider applications, accounts, moderation, listings and current no-payment model
+- [x] Add explicit Terms/Privacy acknowledgement to account creation, wedding-help requests and provider applications
 - [x] Set Supabase Auth Site URL to `https://www.marocvows.com/`
 - [x] Add production redirect URLs: `https://www.marocvows.com/account.html` and `https://www.marocvows.com/`
 - [ ] Test email/password account creation and email confirmation on desktop and mobile
