@@ -4,6 +4,7 @@ const $=(s,root=document)=>root.querySelector(s);
 const $$=(s,root=document)=>[...root.querySelectorAll(s)];
 let supabase=null;
 let user=null;
+let recoveryMode=new URLSearchParams(location.search).get('mode')==='recovery';
 
 function status(el,msg,type=''){
   if(!el)return;
@@ -21,26 +22,74 @@ async function loadSupabase(){
     document.head.appendChild(s);
   });
   supabase=window.supabase.createClient(cfg.supabaseUrl,cfg.publishableKey,{auth:{persistSession:true,detectSessionInUrl:true}});
-  const {data}=await supabase.auth.getSession();
-  user=data.session?.user||null;
-  supabase.auth.onAuthStateChange((_event,session)=>{
+  supabase.auth.onAuthStateChange((event,session)=>{
+    if(event==='PASSWORD_RECOVERY')recoveryMode=true;
     user=session?.user||null;
     renderAuthState();
   });
+  const {data}=await supabase.auth.getSession();
+  user=data.session?.user||null;
   return supabase;
 }
 
 function portalEnabled(){return cfg.portalFeaturesEnabled===true;}
+function oauthProviders(){return Array.isArray(cfg.oauthProviders)?cfg.oauthProviders:[];}
+function authReturnUrl(){return location.origin+'/account.html';}
+
+function enhancePasswordFields(){
+  $$('input[type="password"]').forEach(input=>{
+    if(input.parentElement?.classList.contains('password-wrap'))return;
+    const wrap=document.createElement('span');
+    wrap.className='password-wrap';
+    input.parentNode.insertBefore(wrap,input);
+    wrap.appendChild(input);
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='password-toggle';
+    btn.textContent='Show';
+    btn.setAttribute('aria-label','Show password');
+    btn.addEventListener('click',()=>{
+      const showing=input.type==='text';
+      input.type=showing?'password':'text';
+      btn.textContent=showing?'Show':'Hide';
+      btn.setAttribute('aria-label',showing?'Show password':'Hide password');
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+function renderOauthButtons(){
+  const enabled=oauthProviders();
+  $$('[data-oauth-provider]').forEach(btn=>{
+    const provider=btn.dataset.oauthProvider;
+    const active=enabled.includes(provider);
+    btn.disabled=!active;
+    btn.title=active?'':`${provider[0].toUpperCase()+provider.slice(1)} sign-in will activate after provider setup in Supabase.`;
+  });
+}
 
 function renderAuthState(){
   const gate=$('#portalGate');
   const authShell=$('#authShell');
   const memberShell=$('#memberShell');
+  const recoveryShell=$('#recoveryShell');
   const userEmail=$('#userEmail');
   const signOut=$('#signOut');
 
+  if(recoveryMode){
+    if(gate)gate.hidden=true;
+    if(authShell)authShell.hidden=true;
+    if(memberShell)memberShell.hidden=true;
+    if(recoveryShell)recoveryShell.hidden=false;
+    $$('[data-auth-only]').forEach(el=>el.hidden=true);
+    $$('[data-guest-only]').forEach(el=>el.hidden=true);
+    return;
+  }
+
+  if(recoveryShell)recoveryShell.hidden=true;
+
   if(!portalEnabled()){
-    if(gate){gate.hidden=false;gate.textContent='The MarocVows account portal is built but not publicly open yet. We are finishing the privacy/contact and production-authentication launch checks before collecting account data.';}
+    if(gate){gate.hidden=false;gate.textContent='The MarocVows account portal is built but not publicly open yet. We are finishing the final launch checks before collecting account data.';}
     if(authShell)authShell.hidden=true;
     if(memberShell)memberShell.hidden=true;
     $$('[data-auth-only]').forEach(el=>el.hidden=true);
@@ -74,7 +123,7 @@ async function signUp(e){
   if(confirm!==undefined&&password!==confirm){status(out,'Passwords do not match.','error');return;}
   try{
     await loadSupabase();
-    const {data,error}=await supabase.auth.signUp({email,password,options:{emailRedirectTo:location.origin+'/account.html'}});
+    const {data,error}=await supabase.auth.signUp({email,password,options:{emailRedirectTo:authReturnUrl()}});
     if(error)throw error;
     if(data.session){
       user=data.user;
@@ -100,6 +149,66 @@ async function signIn(e){
     status(out,'Signed in.','success');
     renderAuthState();
   }catch(err){status(out,err?.message||'Could not sign in.','error');}
+}
+
+async function quickEmailSignIn(e){
+  e.preventDefault();
+  const form=e.currentTarget;
+  const email=$('[name="email"]',form).value.trim();
+  const out=$('.status',form);
+  try{
+    await loadSupabase();
+    const {error}=await supabase.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:authReturnUrl()}});
+    if(error)throw error;
+    status(out,'If that email belongs to a MarocVows account, a secure sign-in link has been sent.','success');
+  }catch(err){status(out,err?.message||'Could not send the sign-in link.','error');}
+}
+
+async function socialSignIn(e){
+  const btn=e.currentTarget;
+  const provider=btn.dataset.oauthProvider;
+  const out=$('#oauthStatus');
+  if(!oauthProviders().includes(provider)){
+    status(out,`${provider[0].toUpperCase()+provider.slice(1)} sign-in is prepared but not enabled yet.`, '');
+    return;
+  }
+  try{
+    await loadSupabase();
+    const {error}=await supabase.auth.signInWithOAuth({provider,options:{redirectTo:authReturnUrl()}});
+    if(error)throw error;
+  }catch(err){status(out,err?.message||'Could not start social sign-in.','error');}
+}
+
+async function forgotPassword(e){
+  e.preventDefault();
+  const form=e.currentTarget;
+  const email=$('[name="email"]',form).value.trim();
+  const out=$('.status',form);
+  try{
+    await loadSupabase();
+    const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:location.origin+'/account.html?mode=recovery'});
+    if(error)throw error;
+    status(out,'If that email belongs to a MarocVows account, a password-reset link has been sent.','success');
+  }catch(err){status(out,err?.message||'Could not send the password-reset email.','error');}
+}
+
+async function updatePassword(e){
+  e.preventDefault();
+  const form=e.currentTarget;
+  const password=$('[name="password"]',form).value;
+  const confirm=$('[name="confirm_password"]',form).value;
+  const out=$('.status',form);
+  if(password.length<8){status(out,'Use at least 8 characters for your new password.','error');return;}
+  if(password!==confirm){status(out,'Passwords do not match.','error');return;}
+  try{
+    await loadSupabase();
+    const {error}=await supabase.auth.updateUser({password});
+    if(error)throw error;
+    recoveryMode=false;
+    history.replaceState({},'',location.pathname);
+    status(out,'Password updated successfully.','success');
+    renderAuthState();
+  }catch(err){status(out,err?.message||'Could not update the password. Open the newest reset link and try again.','error');}
 }
 
 async function signOut(){
@@ -195,13 +304,19 @@ async function loadMemberHistory(){
 function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));}
 
 async function boot(){
+  enhancePasswordFields();
+  renderOauthButtons();
   $('#signUpForm')?.addEventListener('submit',signUp);
   $('#signInForm')?.addEventListener('submit',signIn);
+  $('#magicLinkForm')?.addEventListener('submit',quickEmailSignIn);
+  $('#forgotPasswordForm')?.addEventListener('submit',forgotPassword);
+  $('#updatePasswordForm')?.addEventListener('submit',updatePassword);
+  $$('[data-oauth-provider]').forEach(btn=>btn.addEventListener('click',socialSignIn));
   $('#signOut')?.addEventListener('click',signOut);
   $('#weddingRequestForm')?.addEventListener('submit',submitWeddingRequest);
   $('#providerForm')?.addEventListener('submit',submitProvider);
 
-  if(!portalEnabled()){renderAuthState();return;}
+  if(!portalEnabled()&&!recoveryMode){renderAuthState();return;}
   try{await loadSupabase();renderAuthState();}
   catch(_e){const gate=$('#portalGate');if(gate){gate.hidden=false;gate.textContent='The account service is temporarily unavailable.';}}
 }
