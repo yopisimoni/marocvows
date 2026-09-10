@@ -4,18 +4,18 @@ const vendors={
   'traiteur-el-ghrabli':{name:'Traiteur El Ghrabli',city:'Khénifra',address:'Idriss II, Khénifra 54000',phone:'+212661714324'},
   'lux-atlas-events':{name:'Lux Atlas Events',city:'Khénifra',address:'4 Rue Oum Rabiaa, Hamria, Khénifra'},
   'deguste':{name:'Deguste',city:'Khénifra',address:'Quartier des F.A.R., 1st floor, Khénifra'},
-  'doreve-events-traiteur':{name:'DOREVE EVENTS Traiteur',city:'Fès',address:'Rue Lalla Fatima Zahra, Ville Nouvelle, Fès 30000',phone:'+212657073073'},
+  'doreve-events-traiteur':{name:'DOREVE EVENTS Traiteur',city:'Fès',address:'Etg 2, Fatima Zahrae VN, Ville Nouvelle 1, Bureau 10 Rue Lalla Fatima Zahra, Fès 30000, Morocco',phone:'+212657073073',publicCategory:'Caterer & event planner',publicRating:4.8,publicReviewCount:250,verifiedAt:'10 Sep 2026'},
   'traiteur-afrah-metarhri':{name:'Traiteur AFRAH.METARHRI',city:'Fès',address:'Jabal Tghat 2, Fès 30090',phone:'+212690989593'},
   'afrah-noujoum-fes':{name:'Afrah Noujoum Fès',city:'Fès',address:'Atlas, Route de Sefrou, Fès 30000',phone:'+212662078275'},
   'traiteur-fes-damo':{name:'Traiteur Fès Damo',city:'Fès',address:'Fès, Morocco',phone:'+212674068196'},
-  'la-gala-luxury-events':{name:'La Gala Luxury Events',city:'Fès',address:'Champs de Course, Fès 30000',phone:'+212662808900'},
+  'la-gala-luxury-events':{name:'La Gala Luxury Events',city:'Fès',address:'Champs De Course, Magasin 6, 23 Lot Yacouta Bled Tazi Entree Droite, Fès 30000, Morocco',phone:'+212662808900',publicCategory:'Caterer',publicRating:5.0,publicReviewCount:3,verifiedAt:'10 Sep 2026'},
   'chhiouate-fes':{name:'Chhiouate Fès',city:'Fès',address:'Fès 30000',phone:'+212661986633'},
-  'arab-events-traiteur':{name:'Arab Events Traiteur',city:'Fès',address:'Fès / Moulay Driss Zerhoun area',phone:'+212649487580'},
+  'arab-events-traiteur':{name:'Arab Events Traiteur',city:'Fès',address:'Moulay Driss Zerhoun, Fès, Morocco',phone:'+212649487580',publicCategory:'Caterer',verifiedAt:'10 Sep 2026'},
   'traiteur-bensalem-fes':{name:'Traiteur Bensalem Fès',city:'Fès',address:'Avenue Med El Fassi, Fès 30500',phone:'+212661407045'},
   'arizona-events':{name:'Arizona Events',city:'Fès',address:'Fès 30050',phone:'+212661397454'},
   'touche-de-vie-traiteur':{name:'Touche de Vie Traiteur',city:'Fès',address:'Rue Abdelkrim Benjelloun, Fès 30000',phone:'+212644677988'},
-  'mounirs-traiteur-meknes':{name:"Mounir's Traiteur Meknes",city:'Meknès',address:'Avenue Zerektouni, Meknès 50000',phone:'+212660404490'},
-  'allo-pastilla-maroc-group':{name:'Allo Pastilla Maroc Group',city:'Meknès',address:'Résidence Ibn Sina, Meknès 50100',phone:'+212687803551'},
+  'mounirs-traiteur-meknes':{name:"Mounir's Traiteur Meknes",city:'Meknès',address:'Magazin N 2, Avenue Zerektouni, Route Hopital Mohamed V, Meknès 50000, Morocco',phone:'+212660404490',publicCategory:'Caterer',publicRating:4.7,publicReviewCount:181,verifiedAt:'10 Sep 2026',website:'https://traiteur-meknes-mounirs.com/',services:['Weddings','Private events','Corporate events','Decoration','Art de la table','Maître d’hôtel']},
+  'allo-pastilla-maroc-group':{name:'Allo Pastilla Maroc Group',city:'Meknès',address:'1 IMM A2 APPRT 3, RES IBN SINA, Meknès 50100, Morocco',phone:'+212687803551',publicCategory:'Caterer',publicRating:5.0,publicReviewCount:6,verifiedAt:'10 Sep 2026'},
   'traiteur-family-hamdoune-meknes':{name:'Traiteur Family Hamdoune Meknès',city:'Meknès',address:'Kamilia, Rue Belair, Meknès 50000',phone:'+212665874447'},
   'dar-bennouna-traiteur':{name:'Dar Bennouna Traiteur',city:'Meknès',address:'Meknès, Morocco',phone:'+212661948284'},
   'fidelity-events-and-traiteur':{name:'Fidelity Events & Traiteur',city:'Meknès',address:'Ismalia 2, Rue de Fès, Meknès 50000',phone:'+212611348724'},
@@ -39,8 +39,11 @@ const desc=`View contact and location details for ${v.name}, a wedding caterer l
 let meta=document.querySelector('meta[name="description"]');if(meta)meta.content=desc;
 let canonical=document.querySelector('link[rel="canonical"]');if(!canonical){canonical=document.createElement('link');canonical.rel='canonical';document.head.appendChild(canonical);}canonical.href=`https://www.marocvows.com${cleanPath}`;
 $('#name').textContent=v.name;$('#city').textContent=v.city;$('#address').textContent=v.address;$('#crumb').textContent=v.name;
-$('#category').textContent='Wedding caterer & event service';
+$('#category').textContent=v.publicCategory||'Wedding caterer & event service';
 $('#phoneRow').innerHTML=v.phone?`<a class="primary-btn" href="tel:${v.phone.replace(/\s+/g,'')}">Call ${v.phone}</a>`:'<span class="soft-note">Phone number not currently listed. Confirm contact details independently.</span>';
 $('#mapLink').href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(v.address);
-const ld={"@context":"https://schema.org","@type":"LocalBusiness","name":v.name,"address":v.address,"areaServed":v.city,"url":`https://www.marocvows.com${cleanPath}`};if(v.phone)ld.telephone=v.phone;document.getElementById('vendorSchema').textContent=JSON.stringify(ld);
+if(v.website){const w=$('#websiteLink');w.href=v.website;w.hidden=false;}
+if(v.services&&v.services.length){$('#servicesBlock').hidden=false;$('#services').innerHTML=v.services.map(s=>`<span>${s}</span>`).join('');}
+if(v.publicCategory||v.publicRating||v.verifiedAt){const box=$('#publicSnapshot');const bits=[];if(v.publicCategory)bits.push(v.publicCategory);if(v.publicRating)bits.push(`${v.publicRating}/5 from ${v.publicReviewCount||0} public reviews`);$('#snapshotText').textContent=bits.join(' · ');$('#verifiedStamp').textContent=v.verifiedAt?`Public listing checked ${v.verifiedAt}. Ratings and review counts can change.`:'';box.classList.add('visible');}
+const ld={"@context":"https://schema.org","@type":"LocalBusiness","name":v.name,"address":v.address,"areaServed":v.city,"url":`https://www.marocvows.com${cleanPath}`};if(v.phone)ld.telephone=v.phone;if(v.website)ld.sameAs=[v.website];document.getElementById('vendorSchema').textContent=JSON.stringify(ld);
 })();
