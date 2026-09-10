@@ -6,95 +6,124 @@
 <title>MarocVows Portal QA</title>
 <meta name="robots" content="noindex,nofollow,noarchive">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="auth-premium.css">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
-<body>
+<body class="auth-page">
 <header class="site-header">
 <a class="brand" href="/"><span class="brand-mark">MV</span><span>MarocVows</span></a>
 <div class="header-actions"><span class="ghost-btn" aria-disabled="true">Private QA</span></div>
 </header>
 <main class="legal-shell">
-<p class="eyebrow">Temporary controlled test</p>
-<h1>MarocVows account and submission QA</h1>
-<p>This unlinked page is for controlled pre-launch testing only. It is excluded from search indexing and will be removed after the test.</p>
+<div class="auth-qa-banner"><span>This page is only for controlled pre-launch testing and is excluded from search indexing.</span><span class="auth-qa-badge">Private QA</span></div>
+
+<section class="auth-hero">
+<p class="eyebrow">Controlled member test</p>
+<h1>Test the MarocVows account experience.</h1>
+<p>Verify quick access, password signup, account recovery, wedding-help requests and professional applications before the public portal opens.</p>
+<div class="auth-trust-row">
+<span class="auth-trust-item">No public indexing</span>
+<span class="auth-trust-item">Private database test</span>
+<span class="auth-trust-item">One-account flow</span>
+</div>
+</section>
+
 <div id="portalGate" class="auth-note" hidden></div>
 
-<section id="authShell">
-<div class="legal-card auth-feature-card">
+<section id="authShell" class="auth-grid">
+<article class="auth-panel auth-panel--featured">
+<div class="auth-panel-kicker">Fast access</div>
 <h2>Quick sign in</h2>
-<p>Google and Facebook sign-in are prepared in the interface but remain disabled until their Supabase providers are configured. Email quick sign-in can be tested now.</p>
+<p class="auth-panel-intro">Use an existing account without entering a password. Google and Facebook will activate after provider setup; secure email sign-in can be tested now.</p>
 <div class="oauth-grid">
 <button class="oauth-btn" type="button" data-oauth-provider="google">Continue with Google</button>
 <button class="oauth-btn" type="button" data-oauth-provider="facebook">Continue with Facebook</button>
 </div>
 <div id="oauthStatus" class="status"></div>
-<p class="tiny">Matching verified email identities can be linked to one Supabase user, helping prevent duplicate accounts.</p>
-<div class="auth-divider"><span>or use email</span></div>
+<div class="auth-divider"><span>or continue with email</span></div>
 <form id="magicLinkForm" class="review-form">
-<label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></label>
 <div class="status"></div>
-<button class="secondary-auth-btn" type="submit">Email me a secure sign-in link</button>
+<button class="auth-secondary-btn" type="submit">Send me a secure sign-in link</button>
 </form>
+<p class="auth-note-line"><strong>Duplicate protection:</strong> matching verified email identities can be linked to the same Supabase user instead of creating separate accounts.</p>
+</article>
+
+<article class="auth-panel">
+<div class="auth-panel-kicker">Member access</div>
+<div class="auth-tabs" role="tablist" aria-label="Account access">
+<button class="auth-tab is-active" type="button" role="tab" aria-selected="true" data-auth-tab="signup">Create account</button>
+<button class="auth-tab" type="button" role="tab" aria-selected="false" data-auth-tab="signin">Sign in</button>
 </div>
 
-<div class="legal-card">
-<h2>1. Create a test account</h2>
-<p class="tiny">Use an email inbox you can access. Supabase may ask you to confirm the email. After confirming, return to this QA page and sign in.</p>
+<div data-auth-panel="signup">
+<h2>Create a test account</h2>
+<p class="auth-panel-intro">Use an inbox you can access so we can verify the email-confirmation flow.</p>
 <form id="signUpForm" class="review-form">
-<label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></label>
 <label>Password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
 <label>Confirm password<input name="confirm_password" type="password" autocomplete="new-password" minlength="8" required></label>
-<p class="tiny">Use at least 8 characters. By creating an account you agree to the <a href="terms.html" target="_blank" rel="noopener">Terms</a> and acknowledge the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+<p class="tiny">Use at least 8 characters.</p>
+<label class="tiny auth-check"><input type="checkbox" required><span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms</a> and acknowledge the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
 <div class="status"></div>
-<button class="primary-btn" type="submit">Create test account</button>
+<button class="auth-primary-btn" type="submit">Create your test account</button>
 </form>
 </div>
 
-<div class="legal-card">
-<h2>2. Sign in with password</h2>
+<div data-auth-panel="signin" hidden>
+<h2>Welcome back</h2>
+<p class="auth-panel-intro">Sign in using the test account you confirmed.</p>
 <form id="signInForm" class="review-form">
-<label>Email address<input name="email" type="email" autocomplete="email" required></label>
+<label>Email address<input name="email" type="email" autocomplete="email" placeholder="you@example.com" required></label>
 <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
 <div class="status"></div>
-<button class="primary-btn" type="submit">Sign in</button>
+<button class="auth-primary-btn" type="submit">Access your account</button>
 </form>
+<div class="auth-links-row">
+<span class="tiny">Can't remember your password?</span>
 <details class="auth-details">
-<summary>Forgot password?</summary>
+<summary class="auth-text-link">Reset your password</summary>
 <form id="forgotPasswordForm" class="review-form compact-form">
-<label>Account email<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<label>Account email<input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></label>
 <div class="status"></div>
-<button class="secondary-auth-btn" type="submit">Send password-reset email</button>
+<button class="auth-secondary-btn" type="submit">Send password-reset email</button>
 </form>
 </details>
 </div>
+</div>
+</article>
 </section>
 
 <section id="recoveryShell" hidden>
-<div class="legal-card">
-<p class="eyebrow">Password recovery test</p>
+<article class="auth-panel auth-panel--featured" style="max-width:620px;margin:20px auto 0">
+<div class="auth-panel-kicker">Password recovery test</div>
 <h2>Choose a new password</h2>
 <form id="updatePasswordForm" class="review-form">
 <label>New password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
 <label>Confirm new password<input name="confirm_password" type="password" autocomplete="new-password" minlength="8" required></label>
 <div class="status"></div>
-<button class="primary-btn" type="submit">Update password</button>
+<button class="auth-primary-btn" type="submit">Update password</button>
 </form>
-</div>
+</article>
 </section>
 
 <section id="memberShell" hidden>
+<div class="auth-member-grid">
 <div class="legal-card">
-<h2>Signed in</h2>
+<p class="eyebrow">Signed in</p>
+<h2>Your QA account is active</h2>
 <p>Account: <strong id="userEmail"></strong></p>
-<button id="signOut" class="secondary-auth-btn" type="button">Sign out</button>
+<button id="signOut" class="auth-secondary-btn" type="button">Sign out</button>
 </div>
 <div class="legal-card"><h2>Your wedding-help requests</h2><div id="requestHistory"></div></div>
 <div class="legal-card"><h2>Your provider applications</h2><div id="applicationHistory"></div></div>
+</div>
 </section>
 
-<section data-auth-only hidden>
+<section data-auth-only hidden class="auth-testing-grid">
 <div class="legal-card">
-<h2>3. Submit a wedding-help test</h2>
+<p class="eyebrow">Test 3</p>
+<h2>Wedding-help request</h2>
 <form id="weddingRequestForm" class="review-form">
 <label>Your name<input name="full_name" maxlength="120" autocomplete="name" required></label>
 <label>Account email<input name="email" type="email" maxlength="254" data-account-email autocomplete="email" required></label>
@@ -110,14 +139,15 @@
 <label class="chip"><input type="checkbox" name="services" value="dj"> DJ</label>
 </div></div>
 <label>Test notes<textarea name="notes" maxlength="2000" rows="4">QA test request — safe to delete after verification.</textarea></label>
-<label class="tiny"><input type="checkbox" required> I understand this is a controlled test and have read the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</label>
+<label class="tiny auth-check"><input type="checkbox" required><span>I understand this is a controlled test and have read the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
 <div class="status"></div>
-<button class="primary-btn" type="submit">Send wedding test</button>
+<button class="auth-primary-btn" type="submit">Send wedding test</button>
 </form>
 </div>
 
 <div class="legal-card">
-<h2>4. Submit a provider-application test</h2>
+<p class="eyebrow">Test 4</p>
+<h2>Professional application</h2>
 <form id="providerForm" class="review-form">
 <label>Business / professional name<input name="business_name" maxlength="160" value="MarocVows QA Test Provider" required></label>
 <label>Service category<select name="provider_type" required><option value="caterer">Wedding caterer</option><option value="venue">Wedding venue / hall</option><option value="planner">Wedding planner / event manager</option><option value="cook">Cook / kitchen team</option><option value="dj">DJ</option><option value="photographer">Photographer</option><option value="videographer">Videographer</option><option value="decorator">Decorator</option><option value="band">Band / musician</option><option value="florist">Florist</option><option value="beauty">Beauty / makeup</option><option value="henna">Henna artist</option><option value="transport">Wedding transport</option><option value="cake">Cake / pastry</option><option value="rentals">Event rentals</option><option value="other">Other wedding service</option></select></label>
@@ -131,10 +161,10 @@
 <label>Website (optional)<input name="website" type="url" maxlength="300" placeholder="https://"></label>
 <label>Instagram or social profile (optional)<input name="instagram" maxlength="300"></label>
 <label>Description<textarea name="description" minlength="40" maxlength="2000" rows="5" required>This is a temporary MarocVows QA provider application used only to verify the pre-launch submission workflow.</textarea></label>
-<label class="tiny"><input type="checkbox" required> I confirm this is an authorized test submission.</label>
-<label class="tiny"><input type="checkbox" required> I understand this remains private pending review and have read the <a href="terms.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</label>
+<label class="tiny auth-check"><input type="checkbox" required><span>I confirm this is an authorized test submission.</span></label>
+<label class="tiny auth-check"><input type="checkbox" required><span>I understand this remains private pending review and have read the <a href="terms.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
 <div class="status"></div>
-<button class="primary-btn" type="submit">Send provider test</button>
+<button class="auth-primary-btn" type="submit">Send provider test</button>
 </form>
 </div>
 </section>
@@ -142,6 +172,7 @@
 <footer><div><strong>MarocVows</strong><p>Temporary QA page · © 2026</p></div></footer>
 <script src="config.js"></script>
 <script>window.MAROCVOWS_CONFIG={...window.MAROCVOWS_CONFIG,portalFeaturesEnabled:true};</script>
+<script src="auth-premium.js"></script>
 <script src="portal.js"></script>
 </body>
 </html>
