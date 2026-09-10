@@ -21,7 +21,25 @@
 <p>Create one account to ask for wedding-planning help, submit your wedding business for review, and later manage community contributions when those features open.</p>
 <nav class="legal-nav"><a href="/">Home</a><a href="wedding-help.html">Get wedding help</a><a href="provider-submit.html">List your business</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
 <div id="portalGate" class="auth-note" hidden></div>
+
 <section id="authShell">
+<div class="legal-card auth-feature-card">
+<h2>Quick sign in</h2>
+<p>Use one account across MarocVows. Social sign-in is prepared for Google and Facebook and will activate after their Supabase provider setup is completed.</p>
+<div class="oauth-grid">
+<button class="oauth-btn" type="button" data-oauth-provider="google">Continue with Google</button>
+<button class="oauth-btn" type="button" data-oauth-provider="facebook">Continue with Facebook</button>
+</div>
+<div id="oauthStatus" class="status"></div>
+<p class="tiny">If a social provider returns the same verified email as an existing account, Supabase can link the identity to the same user instead of creating a second account.</p>
+<div class="auth-divider"><span>or use email</span></div>
+<form id="magicLinkForm" class="review-form">
+<label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<div class="status"></div>
+<button class="secondary-auth-btn" type="submit">Email me a secure sign-in link</button>
+</form>
+</div>
+
 <div class="legal-card">
 <h2>Create an account</h2>
 <form id="signUpForm" class="review-form">
@@ -34,16 +52,40 @@
 <button class="primary-btn" type="submit">Create account</button>
 </form>
 </div>
+
 <div class="legal-card">
-<h2>Sign in</h2>
+<h2>Sign in with password</h2>
 <form id="signInForm" class="review-form">
 <label>Email address<input name="email" type="email" autocomplete="email" required></label>
 <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
 <div class="status"></div>
 <button class="primary-btn" type="submit">Sign in</button>
 </form>
+<details class="auth-details">
+<summary>Forgot password?</summary>
+<form id="forgotPasswordForm" class="review-form compact-form">
+<label>Account email<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<div class="status"></div>
+<button class="secondary-auth-btn" type="submit">Send password-reset email</button>
+</form>
+</details>
 </div>
 </section>
+
+<section id="recoveryShell" hidden>
+<div class="legal-card">
+<p class="eyebrow">Password recovery</p>
+<h2>Choose a new password</h2>
+<p>Enter a new password for your MarocVows account.</p>
+<form id="updatePasswordForm" class="review-form">
+<label>New password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
+<label>Confirm new password<input name="confirm_password" type="password" autocomplete="new-password" minlength="8" required></label>
+<div class="status"></div>
+<button class="primary-btn" type="submit">Update password</button>
+</form>
+</div>
+</section>
+
 <section id="memberShell" hidden>
 <div class="legal-card">
 <h2>You are signed in</h2>
