@@ -34,7 +34,10 @@ async function loadSupabase(){
 
 function portalEnabled(){return cfg.portalFeaturesEnabled===true;}
 function oauthProviders(){return Array.isArray(cfg.oauthProviders)?cfg.oauthProviders:[];}
-function authReturnUrl(){return location.origin+'/account.html';}
+function authReturnUrl(){
+  if(document.body?.dataset.authReturn==='self')return location.origin+location.pathname;
+  return location.origin+'/account.html';
+}
 
 function enhancePasswordFields(){
   $$('input[type="password"]').forEach(input=>{
@@ -68,6 +71,15 @@ function renderOauthButtons(){
   });
 }
 
+function renderRoleState(){
+  const current=$('#currentRole');
+  const saved=user?.user_metadata?.marocvows_role||'';
+  if(current){
+    current.textContent=saved==='client'?'Last choice: looking for wedding services':saved==='provider'?'Last choice: offering wedding services':'';
+    current.hidden=!saved;
+  }
+}
+
 function renderAuthState(){
   const gate=$('#portalGate');
   const authShell=$('#authShell');
@@ -82,7 +94,6 @@ function renderAuthState(){
     if(memberShell)memberShell.hidden=true;
     if(recoveryShell)recoveryShell.hidden=false;
     $$('[data-auth-only]').forEach(el=>el.hidden=true);
-    $$('[data-guest-only]').forEach(el=>el.hidden=true);
     return;
   }
 
@@ -93,7 +104,6 @@ function renderAuthState(){
     if(authShell)authShell.hidden=true;
     if(memberShell)memberShell.hidden=true;
     $$('[data-auth-only]').forEach(el=>el.hidden=true);
-    $$('[data-guest-only]').forEach(el=>el.hidden=true);
     return;
   }
 
@@ -102,12 +112,11 @@ function renderAuthState(){
   if(memberShell)memberShell.hidden=!user;
   if(userEmail)userEmail.textContent=user?.email||'';
   if(signOut)signOut.hidden=!user;
-
   $$('[data-auth-only]').forEach(el=>el.hidden=!user);
-  $$('[data-guest-only]').forEach(el=>el.hidden=!!user);
 
   if(user){
     $$('input[data-account-email]').forEach(input=>{input.value=user.email||'';input.readOnly=true;});
+    renderRoleState();
     loadMemberHistory();
   }
 }
@@ -127,10 +136,10 @@ async function signUp(e){
     if(error)throw error;
     if(data.session){
       user=data.user;
-      status(out,'Account created. You are signed in.','success');
+      status(out,'Account created.','success');
       renderAuthState();
     }else{
-      status(out,'Account created. Check your email to confirm your address, then sign in.','success');
+      status(out,'Account created. Check your email to confirm it, then sign in.','success');
     }
   }catch(err){status(out,err?.message||'Could not create the account.','error');}
 }
@@ -169,7 +178,7 @@ async function socialSignIn(e){
   const provider=btn.dataset.oauthProvider;
   const out=$('#oauthStatus');
   if(!oauthProviders().includes(provider)){
-    status(out,`${provider[0].toUpperCase()+provider.slice(1)} sign-in is prepared but not enabled yet.`,'');
+    status(out,`${provider[0].toUpperCase()+provider.slice(1)} sign-in is not enabled yet.`,'');
     return;
   }
   try{
@@ -211,6 +220,29 @@ async function updatePassword(e){
   }catch(err){status(out,err?.message||'Could not update the password. Open the newest reset link and try again.','error');}
 }
 
+async function chooseRole(e){
+  const btn=e.currentTarget;
+  const role=btn.dataset.roleChoice;
+  const target=btn.dataset.roleTarget||'';
+  const out=$('#roleStatus');
+  if(!user||!['client','provider'].includes(role))return;
+  try{
+    await loadSupabase();
+    const {data,error}=await supabase.auth.updateUser({data:{marocvows_role:role}});
+    if(error)throw error;
+    if(data?.user)user=data.user;
+    renderRoleState();
+    status(out,role==='client'?'Great — tell us what you need for your wedding or event.':'Great — tell us what service you offer.','success');
+    if(target.startsWith('#')){
+      $$('[data-qa-role]').forEach(el=>el.hidden=true);
+      const panel=$(target);
+      if(panel){panel.hidden=false;panel.scrollIntoView({behavior:'smooth',block:'start'});}
+    }else if(target){
+      location.href=target;
+    }
+  }catch(err){status(out,err?.message||'Could not save your choice.','error');}
+}
+
 async function signOut(){
   try{await loadSupabase();await supabase.auth.signOut();user=null;renderAuthState();}
   catch(_e){}
@@ -222,19 +254,7 @@ async function submitWeddingRequest(e){
   const form=e.currentTarget;
   const out=$('.status',form);
   const services=$$('input[name="services"]:checked',form).map(x=>x.value);
-  const payload={
-    user_id:user.id,
-    full_name:form.full_name.value.trim(),
-    email:user.email||form.email.value.trim(),
-    phone:form.phone.value.trim()||null,
-    city:form.city.value.trim(),
-    event_date:form.event_date.value||null,
-    guest_count:form.guest_count.value?Number(form.guest_count.value):null,
-    budget_range:form.budget_range.value||null,
-    services,
-    notes:form.notes.value.trim(),
-    status:'new'
-  };
+  const payload={user_id:user.id,full_name:form.full_name.value.trim(),email:user.email||form.email.value.trim(),phone:form.phone.value.trim()||null,city:form.city.value.trim(),event_date:form.event_date.value||null,guest_count:form.guest_count.value?Number(form.guest_count.value):null,budget_range:form.budget_range.value||null,services,notes:form.notes.value.trim(),status:'new'};
   try{
     await loadSupabase();
     const {error}=await supabase.from('wedding_requests').insert(payload);
@@ -242,7 +262,7 @@ async function submitWeddingRequest(e){
     form.reset();
     form.email.value=user.email||'';
     form.email.readOnly=true;
-    status(out,'Request received. MarocVows can now review your needs and help shortlist suitable wedding professionals.','success');
+    status(out,'Request received. MarocVows can now review your needs.','success');
     loadMemberHistory();
   }catch(err){status(out,err?.message||'Could not send your request.','error');}
 }
@@ -252,22 +272,7 @@ async function submitProvider(e){
   if(!portalEnabled()||!user)return;
   const form=e.currentTarget;
   const out=$('.status',form);
-  const payload={
-    user_id:user.id,
-    business_name:form.business_name.value.trim(),
-    provider_type:form.provider_type.value,
-    contact_name:form.contact_name.value.trim(),
-    email:user.email||form.email.value.trim(),
-    phone:form.phone.value.trim()||null,
-    whatsapp:form.whatsapp.value.trim()||null,
-    city:form.city.value.trim(),
-    service_area:form.service_area.value.trim()||null,
-    address:form.address.value.trim()||null,
-    website:form.website.value.trim()||null,
-    instagram:form.instagram.value.trim()||null,
-    description:form.description.value.trim(),
-    status:'pending'
-  };
+  const payload={user_id:user.id,business_name:form.business_name.value.trim(),provider_type:form.provider_type.value,contact_name:form.contact_name.value.trim(),email:user.email||form.email.value.trim(),phone:form.phone.value.trim()||null,whatsapp:form.whatsapp.value.trim()||null,city:form.city.value.trim(),service_area:form.service_area.value.trim()||null,address:form.address.value.trim()||null,website:form.website.value.trim()||null,instagram:form.instagram.value.trim()||null,description:form.description.value.trim(),status:'pending'};
   try{
     await loadSupabase();
     const {error}=await supabase.from('provider_applications').insert(payload);
@@ -275,7 +280,7 @@ async function submitProvider(e){
     form.reset();
     form.email.value=user.email||'';
     form.email.readOnly=true;
-    status(out,'Application received. It will stay private until MarocVows reviews the business details.','success');
+    status(out,'Application received. It will stay private until MarocVows reviews it.','success');
     loadMemberHistory();
   }catch(err){status(out,err?.message||'Could not submit the application.','error');}
 }
@@ -312,6 +317,7 @@ async function boot(){
   $('#forgotPasswordForm')?.addEventListener('submit',forgotPassword);
   $('#updatePasswordForm')?.addEventListener('submit',updatePassword);
   $$('[data-oauth-provider]').forEach(btn=>btn.addEventListener('click',socialSignIn));
+  $$('[data-role-choice]').forEach(btn=>btn.addEventListener('click',chooseRole));
   $('#signOut')?.addEventListener('click',signOut);
   $('#weddingRequestForm')?.addEventListener('submit',submitWeddingRequest);
   $('#providerForm')?.addEventListener('submit',submitProvider);
