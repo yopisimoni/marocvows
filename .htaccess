@@ -1,3 +1,6 @@
 Options -Indexes
 DirectoryIndex index.html
 ErrorDocument 404 /404.html
+
+RewriteEngine On
+RewriteRule ^vendors/([a-z0-9-]+)/?$ /vendor-profile.html?slug=$1 [L,QSA]
