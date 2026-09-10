@@ -16,13 +16,30 @@
 <main class="legal-shell">
 <p class="eyebrow">Temporary controlled test</p>
 <h1>MarocVows account and submission QA</h1>
-<p>This unlinked page is for the controlled pre-launch test only. It is excluded from search indexing and will be removed after the test.</p>
+<p>This unlinked page is for controlled pre-launch testing only. It is excluded from search indexing and will be removed after the test.</p>
 <div id="portalGate" class="auth-note" hidden></div>
 
 <section id="authShell">
+<div class="legal-card auth-feature-card">
+<h2>Quick sign in</h2>
+<p>Google and Facebook sign-in are prepared in the interface but remain disabled until their Supabase providers are configured. Email quick sign-in can be tested now.</p>
+<div class="oauth-grid">
+<button class="oauth-btn" type="button" data-oauth-provider="google">Continue with Google</button>
+<button class="oauth-btn" type="button" data-oauth-provider="facebook">Continue with Facebook</button>
+</div>
+<div id="oauthStatus" class="status"></div>
+<p class="tiny">Matching verified email identities can be linked to one Supabase user, helping prevent duplicate accounts.</p>
+<div class="auth-divider"><span>or use email</span></div>
+<form id="magicLinkForm" class="review-form">
+<label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<div class="status"></div>
+<button class="secondary-auth-btn" type="submit">Email me a secure sign-in link</button>
+</form>
+</div>
+
 <div class="legal-card">
 <h2>1. Create a test account</h2>
-<p class="tiny">Use an email inbox you can access. Supabase may ask you to confirm the email. The confirmation currently returns to the normal account page; after confirming, return to this QA page and sign in.</p>
+<p class="tiny">Use an email inbox you can access. Supabase may ask you to confirm the email. After confirming, return to this QA page and sign in.</p>
 <form id="signUpForm" class="review-form">
 <label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
 <label>Password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
@@ -32,13 +49,35 @@
 <button class="primary-btn" type="submit">Create test account</button>
 </form>
 </div>
+
 <div class="legal-card">
-<h2>2. Sign in</h2>
+<h2>2. Sign in with password</h2>
 <form id="signInForm" class="review-form">
 <label>Email address<input name="email" type="email" autocomplete="email" required></label>
 <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
 <div class="status"></div>
 <button class="primary-btn" type="submit">Sign in</button>
+</form>
+<details class="auth-details">
+<summary>Forgot password?</summary>
+<form id="forgotPasswordForm" class="review-form compact-form">
+<label>Account email<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<div class="status"></div>
+<button class="secondary-auth-btn" type="submit">Send password-reset email</button>
+</form>
+</details>
+</div>
+</section>
+
+<section id="recoveryShell" hidden>
+<div class="legal-card">
+<p class="eyebrow">Password recovery test</p>
+<h2>Choose a new password</h2>
+<form id="updatePasswordForm" class="review-form">
+<label>New password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
+<label>Confirm new password<input name="confirm_password" type="password" autocomplete="new-password" minlength="8" required></label>
+<div class="status"></div>
+<button class="primary-btn" type="submit">Update password</button>
 </form>
 </div>
 </section>
@@ -47,7 +86,7 @@
 <div class="legal-card">
 <h2>Signed in</h2>
 <p>Account: <strong id="userEmail"></strong></p>
-<button id="signOut" class="secondary-btn" type="button">Sign out</button>
+<button id="signOut" class="secondary-auth-btn" type="button">Sign out</button>
 </div>
 <div class="legal-card"><h2>Your wedding-help requests</h2><div id="requestHistory"></div></div>
 <div class="legal-card"><h2>Your provider applications</h2><div id="applicationHistory"></div></div>
