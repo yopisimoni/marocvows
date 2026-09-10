@@ -18,8 +18,8 @@ jobs:
       - name: Deploy to MarocVows hosting
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          server: server315.web-hosting.com
+          username: deploy@marocvows.com
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
