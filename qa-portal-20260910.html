@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MarocVows Portal QA</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<header class="site-header">
+<a class="brand" href="/"><span class="brand-mark">MV</span><span>MarocVows</span></a>
+<div class="header-actions"><span class="ghost-btn" aria-disabled="true">Private QA</span></div>
+</header>
+<main class="legal-shell">
+<p class="eyebrow">Temporary controlled test</p>
+<h1>MarocVows account and submission QA</h1>
+<p>This unlinked page is for the controlled pre-launch test only. It is excluded from search indexing and will be removed after the test.</p>
+<div id="portalGate" class="auth-note" hidden></div>
+
+<section id="authShell">
+<div class="legal-card">
+<h2>1. Create a test account</h2>
+<p class="tiny">Use an email inbox you can access. Supabase may ask you to confirm the email. The confirmation currently returns to the normal account page; after confirming, return to this QA page and sign in.</p>
+<form id="signUpForm" class="review-form">
+<label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<label>Password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
+<label>Confirm password<input name="confirm_password" type="password" autocomplete="new-password" minlength="8" required></label>
+<p class="tiny">Use at least 8 characters. By creating an account you agree to the <a href="terms.html" target="_blank" rel="noopener">Terms</a> and acknowledge the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+<div class="status"></div>
+<button class="primary-btn" type="submit">Create test account</button>
+</form>
+</div>
+<div class="legal-card">
+<h2>2. Sign in</h2>
+<form id="signInForm" class="review-form">
+<label>Email address<input name="email" type="email" autocomplete="email" required></label>
+<label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+<div class="status"></div>
+<button class="primary-btn" type="submit">Sign in</button>
+</form>
+</div>
+</section>
+
+<section id="memberShell" hidden>
+<div class="legal-card">
+<h2>Signed in</h2>
+<p>Account: <strong id="userEmail"></strong></p>
+<button id="signOut" class="secondary-btn" type="button">Sign out</button>
+</div>
+<div class="legal-card"><h2>Your wedding-help requests</h2><div id="requestHistory"></div></div>
+<div class="legal-card"><h2>Your provider applications</h2><div id="applicationHistory"></div></div>
+</section>
+
+<section data-auth-only hidden>
+<div class="legal-card">
+<h2>3. Submit a wedding-help test</h2>
+<form id="weddingRequestForm" class="review-form">
+<label>Your name<input name="full_name" maxlength="120" autocomplete="name" required></label>
+<label>Account email<input name="email" type="email" maxlength="254" data-account-email autocomplete="email" required></label>
+<label>Phone / WhatsApp (optional)<input name="phone" maxlength="40" autocomplete="tel"></label>
+<label>Wedding city<input name="city" maxlength="100" value="Khénifra" required></label>
+<label>Wedding date (if known)<input name="event_date" type="date"></label>
+<label>Approximate guest count<input name="guest_count" type="number" min="1" max="5000" inputmode="numeric" value="100"></label>
+<label>Approximate budget range<select name="budget_range"><option value="">Prefer not to say yet</option><option value="under-30000">Under 30,000 MAD</option><option value="30000-70000">30,000–70,000 MAD</option><option value="70000-150000">70,000–150,000 MAD</option><option value="150000-300000">150,000–300,000 MAD</option><option value="300000-plus">300,000+ MAD</option></select></label>
+<div><strong>What do you need help finding?</strong><div class="chips" style="margin-top:10px">
+<label class="chip"><input type="checkbox" name="services" value="caterer" checked> Caterer</label>
+<label class="chip"><input type="checkbox" name="services" value="venue"> Wedding venue</label>
+<label class="chip"><input type="checkbox" name="services" value="planner"> Wedding planner</label>
+<label class="chip"><input type="checkbox" name="services" value="dj"> DJ</label>
+</div></div>
+<label>Test notes<textarea name="notes" maxlength="2000" rows="4">QA test request — safe to delete after verification.</textarea></label>
+<label class="tiny"><input type="checkbox" required> I understand this is a controlled test and have read the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</label>
+<div class="status"></div>
+<button class="primary-btn" type="submit">Send wedding test</button>
+</form>
+</div>
+
+<div class="legal-card">
+<h2>4. Submit a provider-application test</h2>
+<form id="providerForm" class="review-form">
+<label>Business / professional name<input name="business_name" maxlength="160" value="MarocVows QA Test Provider" required></label>
+<label>Service category<select name="provider_type" required><option value="caterer">Wedding caterer</option><option value="venue">Wedding venue / hall</option><option value="planner">Wedding planner / event manager</option><option value="cook">Cook / kitchen team</option><option value="dj">DJ</option><option value="photographer">Photographer</option><option value="videographer">Videographer</option><option value="decorator">Decorator</option><option value="band">Band / musician</option><option value="florist">Florist</option><option value="beauty">Beauty / makeup</option><option value="henna">Henna artist</option><option value="transport">Wedding transport</option><option value="cake">Cake / pastry</option><option value="rentals">Event rentals</option><option value="other">Other wedding service</option></select></label>
+<label>Contact person<input name="contact_name" maxlength="120" value="QA Test" required></label>
+<label>Account / business email<input name="email" type="email" maxlength="254" data-account-email required></label>
+<label>Phone<input name="phone" maxlength="40"></label>
+<label>WhatsApp (optional)<input name="whatsapp" maxlength="40"></label>
+<label>Main city<input name="city" maxlength="100" value="Khénifra" required></label>
+<label>Service area<input name="service_area" maxlength="240" value="Khénifra"></label>
+<label>Business address (optional)<input name="address" maxlength="300"></label>
+<label>Website (optional)<input name="website" type="url" maxlength="300" placeholder="https://"></label>
+<label>Instagram or social profile (optional)<input name="instagram" maxlength="300"></label>
+<label>Description<textarea name="description" minlength="40" maxlength="2000" rows="5" required>This is a temporary MarocVows QA provider application used only to verify the pre-launch submission workflow.</textarea></label>
+<label class="tiny"><input type="checkbox" required> I confirm this is an authorized test submission.</label>
+<label class="tiny"><input type="checkbox" required> I understand this remains private pending review and have read the <a href="terms.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</label>
+<div class="status"></div>
+<button class="primary-btn" type="submit">Send provider test</button>
+</form>
+</div>
+</section>
+</main>
+<footer><div><strong>MarocVows</strong><p>Temporary QA page · © 2026</p></div></footer>
+<script src="config.js"></script>
+<script>window.MAROCVOWS_CONFIG={...window.MAROCVOWS_CONFIG,portalFeaturesEnabled:true};</script>
+<script src="portal.js"></script>
+</body>
+</html>
