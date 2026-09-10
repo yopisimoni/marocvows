@@ -26,15 +26,21 @@ const vendors={
   'traiteur-el-mamounia':{name:'Traiteur El Mamounia',city:'Meknès',address:'Meknès, Morocco',phone:'+212617169650'},
   'traiteur-brahim-event':{name:'Traiteur Brahim Event',city:'Meknès',address:'Ryad, Meknès',phone:'+212665971050'}
 };
-const qs=new URLSearchParams(location.search);const slug=qs.get('slug');const v=vendors[slug];
+const qs=new URLSearchParams(location.search);
+const pathMatch=location.pathname.match(/^\/vendors\/([a-z0-9-]+)\/?$/i);
+const slug=(pathMatch&&pathMatch[1])||qs.get('slug');
+const v=vendors[slug];
 const $=s=>document.querySelector(s);
 if(!v){$('#profile').innerHTML='<h1>Vendor not found</h1><p><a href="/">Return to the MarocVows directory</a>.</p>';return;}
+const cleanPath=`/vendors/${slug}/`;
+if(!pathMatch && qs.get('slug')) history.replaceState({},'',cleanPath);
 document.title=`${v.name} | ${v.city} Wedding Caterer | MarocVows`;
 const desc=`View contact and location details for ${v.name}, a wedding caterer listed in ${v.city}, Morocco. Confirm availability, pricing and services directly.`;
 let meta=document.querySelector('meta[name="description"]');if(meta)meta.content=desc;
+let canonical=document.querySelector('link[rel="canonical"]');if(!canonical){canonical=document.createElement('link');canonical.rel='canonical';document.head.appendChild(canonical);}canonical.href=`https://www.marocvows.com${cleanPath}`;
 $('#name').textContent=v.name;$('#city').textContent=v.city;$('#address').textContent=v.address;$('#crumb').textContent=v.name;
 $('#category').textContent='Wedding caterer & event service';
 $('#phoneRow').innerHTML=v.phone?`<a class="primary-btn" href="tel:${v.phone.replace(/\s+/g,'')}">Call ${v.phone}</a>`:'<span class="soft-note">Phone number not currently listed. Confirm contact details independently.</span>';
 $('#mapLink').href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(v.address);
-const ld={"@context":"https://schema.org","@type":"LocalBusiness","name":v.name,"address":v.address,"areaServed":v.city,"url":location.href};if(v.phone)ld.telephone=v.phone;document.getElementById('vendorSchema').textContent=JSON.stringify(ld);
+const ld={"@context":"https://schema.org","@type":"LocalBusiness","name":v.name,"address":v.address,"areaServed":v.city,"url":`https://www.marocvows.com${cleanPath}`};if(v.phone)ld.telephone=v.phone;document.getElementById('vendorSchema').textContent=JSON.stringify(ld);
 })();
