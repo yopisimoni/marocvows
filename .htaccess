@@ -4,13 +4,17 @@ ErrorDocument 404 /404.html
 
 RewriteEngine On
 
-# Block leftover internal QA pages from public access, except the one controlled portal test page.
-RewriteCond %{REQUEST_URI} !^/qa-portal-20260910\.html$ [NC]
+# Block all leftover internal QA routes from public access.
 RewriteRule ^qa(?:-|/).* - [F,L,NC]
 
 # Redirect the old query-string vendor URL to the clean public URL.
 RewriteCond %{THE_REQUEST} \s/+vendor-profile\.html\?slug=([A-Za-z0-9-]+) [NC]
 RewriteRule ^vendor-profile\.html$ /vendors/%1/ [R=301,L,NE,QSD]
+
+# Prevent the bare shared vendor template from being indexed as a generic page.
+RewriteCond %{THE_REQUEST} \s/+vendor-profile\.html(?:[?\x20]) [NC]
+RewriteCond %{QUERY_STRING} !(^|&)slug= [NC]
+RewriteRule ^vendor-profile\.html$ / [R=301,L,QSD]
 
 # Internally serve clean vendor URLs from the shared profile template.
 RewriteRule ^vendors/([a-z0-9-]+)/?$ /vendor-profile.html?slug=$1 [L,QSA]
