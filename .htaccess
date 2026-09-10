@@ -4,6 +4,9 @@ ErrorDocument 404 /404.html
 
 RewriteEngine On
 
+# Block any leftover internal QA pages from public access.
+RewriteRule ^qa(?:-|/).* - [F,L,NC]
+
 # Redirect the old query-string vendor URL to the clean public URL.
 RewriteCond %{THE_REQUEST} \s/+vendor-profile\.html\?slug=([A-Za-z0-9-]+) [NC]
 RewriteRule ^vendor-profile\.html$ /vendors/%1/ [R=301,L,NE,QSD]
