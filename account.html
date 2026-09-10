@@ -8,95 +8,124 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="canonical" href="https://www.marocvows.com/account.html">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="auth-premium.css">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
-<body>
+<body class="auth-page">
 <header class="site-header">
 <a class="brand" href="/"><span class="brand-mark">MV</span><span>MarocVows</span></a>
 <div class="header-actions"><a class="ghost-btn" href="wedding-help.html">Wedding help</a><a class="ghost-btn" href="provider-submit.html">For professionals</a></div>
 </header>
 <main class="legal-shell">
-<p class="eyebrow">Secure member portal</p>
-<h1>MarocVows account</h1>
-<p>Create one account to ask for wedding-planning help, submit your wedding business for review, and later manage community contributions when those features open.</p>
-<nav class="legal-nav"><a href="/">Home</a><a href="wedding-help.html">Get wedding help</a><a href="provider-submit.html">List your business</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
+<section class="auth-hero">
+<p class="eyebrow">Private member access</p>
+<h1>Join MarocVows.</h1>
+<p>Plan your celebration, ask for wedding guidance, and manage professional submissions through one secure MarocVows account.</p>
+<div class="auth-trust-row">
+<span class="auth-trust-item">Private and secure</span>
+<span class="auth-trust-item">Wedding-help requests</span>
+<span class="auth-trust-item">Professional applications</span>
+</div>
+</section>
+
 <div id="portalGate" class="auth-note" hidden></div>
 
-<section id="authShell">
-<div class="legal-card auth-feature-card">
+<section id="authShell" class="auth-grid">
+<article class="auth-panel auth-panel--featured">
+<div class="auth-panel-kicker">Fast access</div>
 <h2>Quick sign in</h2>
-<p>Use one account across MarocVows. Social sign-in is prepared for Google and Facebook and will activate after their Supabase provider setup is completed.</p>
+<p class="auth-panel-intro">Access MarocVows without remembering another password. Use a social account when enabled, or receive a secure link by email.</p>
 <div class="oauth-grid">
 <button class="oauth-btn" type="button" data-oauth-provider="google">Continue with Google</button>
 <button class="oauth-btn" type="button" data-oauth-provider="facebook">Continue with Facebook</button>
 </div>
 <div id="oauthStatus" class="status"></div>
-<p class="tiny">If a social provider returns the same verified email as an existing account, Supabase can link the identity to the same user instead of creating a second account.</p>
-<div class="auth-divider"><span>or use email</span></div>
+<div class="auth-divider"><span>or continue with email</span></div>
 <form id="magicLinkForm" class="review-form">
-<label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></label>
 <div class="status"></div>
-<button class="secondary-auth-btn" type="submit">Email me a secure sign-in link</button>
+<button class="auth-secondary-btn" type="submit">Send me a secure sign-in link</button>
 </form>
+<p class="auth-note-line"><strong>One account.</strong> When the same verified email is used across supported sign-in methods, Supabase can link those identities to the same user instead of creating duplicate accounts.</p>
+</article>
+
+<article class="auth-panel">
+<div class="auth-panel-kicker">Your MarocVows account</div>
+<div class="auth-tabs" role="tablist" aria-label="Account access">
+<button class="auth-tab is-active" type="button" role="tab" aria-selected="true" data-auth-tab="signup">Create account</button>
+<button class="auth-tab" type="button" role="tab" aria-selected="false" data-auth-tab="signin">Sign in</button>
 </div>
 
-<div class="legal-card">
-<h2>Create an account</h2>
+<div data-auth-panel="signup">
+<h2>Create your account</h2>
+<p class="auth-panel-intro">A single account gives you access to wedding guidance and professional listing applications.</p>
 <form id="signUpForm" class="review-form">
-<label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></label>
 <label>Password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
 <label>Confirm password<input name="confirm_password" type="password" autocomplete="new-password" minlength="8" required></label>
 <p class="tiny">Use at least 8 characters. Authentication is handled through Supabase Auth.</p>
-<label class="tiny"><input type="checkbox" required> I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms of Use</a> and acknowledge the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</label>
+<label class="tiny auth-check"><input type="checkbox" required><span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms of Use</a> and acknowledge the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
 <div class="status"></div>
-<button class="primary-btn" type="submit">Create account</button>
+<button class="auth-primary-btn" type="submit">Create your account</button>
 </form>
 </div>
 
-<div class="legal-card">
-<h2>Sign in with password</h2>
+<div data-auth-panel="signin" hidden>
+<h2>Welcome back</h2>
+<p class="auth-panel-intro">Sign in with your MarocVows email and password.</p>
 <form id="signInForm" class="review-form">
-<label>Email address<input name="email" type="email" autocomplete="email" required></label>
+<label>Email address<input name="email" type="email" autocomplete="email" placeholder="you@example.com" required></label>
 <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
 <div class="status"></div>
-<button class="primary-btn" type="submit">Sign in</button>
+<button class="auth-primary-btn" type="submit">Access your account</button>
 </form>
+<div class="auth-links-row">
+<span class="tiny">Need help getting back in?</span>
 <details class="auth-details">
-<summary>Forgot password?</summary>
+<summary class="auth-text-link">Reset your password</summary>
 <form id="forgotPasswordForm" class="review-form compact-form">
-<label>Account email<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<label>Account email<input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></label>
 <div class="status"></div>
-<button class="secondary-auth-btn" type="submit">Send password-reset email</button>
+<button class="auth-secondary-btn" type="submit">Send password-reset email</button>
 </form>
 </details>
 </div>
+</div>
+</article>
 </section>
 
 <section id="recoveryShell" hidden>
-<div class="legal-card">
-<p class="eyebrow">Password recovery</p>
+<article class="auth-panel auth-panel--featured" style="max-width:620px;margin:20px auto 0">
+<div class="auth-panel-kicker">Password recovery</div>
 <h2>Choose a new password</h2>
-<p>Enter a new password for your MarocVows account.</p>
+<p class="auth-panel-intro">Create a new password for your MarocVows account.</p>
 <form id="updatePasswordForm" class="review-form">
 <label>New password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
 <label>Confirm new password<input name="confirm_password" type="password" autocomplete="new-password" minlength="8" required></label>
 <div class="status"></div>
-<button class="primary-btn" type="submit">Update password</button>
+<button class="auth-primary-btn" type="submit">Update password</button>
 </form>
-</div>
+</article>
 </section>
 
 <section id="memberShell" hidden>
+<div class="auth-member-grid">
 <div class="legal-card">
+<p class="eyebrow">Member account</p>
 <h2>You are signed in</h2>
 <p>Account: <strong id="userEmail"></strong></p>
-<div class="hero-actions"><a class="primary-btn" href="wedding-help.html">Ask for wedding help</a><a class="primary-btn" href="provider-submit.html">Submit a wedding business</a><button id="signOut" class="secondary-btn" type="button">Sign out</button></div>
+<div class="hero-actions"><a class="primary-btn" href="wedding-help.html">Ask for wedding help</a><a class="primary-btn" href="provider-submit.html">Submit a wedding business</a><button id="signOut" class="secondary-auth-btn" type="button">Sign out</button></div>
 </div>
 <div class="legal-card"><h2>Your wedding-help requests</h2><div id="requestHistory"></div></div>
 <div class="legal-card"><h2>Your provider applications</h2><div id="applicationHistory"></div></div>
+</div>
 </section>
+
+<nav class="legal-nav"><a href="/">Home</a><a href="wedding-help.html">Wedding help</a><a href="provider-submit.html">For professionals</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
 </main>
 <footer><div><strong>MarocVows</strong><p>© 2026 · Morocco</p></div><nav class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Contact</a></nav></footer>
-<script src="config.js"></script><script src="portal.js"></script>
+<script src="config.js"></script>
+<script src="auth-premium.js"></script>
+<script src="portal.js"></script>
 </body>
 </html>
