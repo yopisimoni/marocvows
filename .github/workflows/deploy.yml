@@ -1,19 +1,18 @@
-name: Manual MarocVows cPanel fallback deploy
+name: Temporary MarocVows cPanel sync
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Deploy to MarocVows cPanel fallback hosting
+      - name: Deploy latest MarocVows files to cPanel fallback hosting
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: server315.web-hosting.com
@@ -32,6 +31,3 @@ jobs:
             LAUNCH_CHECKLIST.md
             CNAME
             .nojekyll
-
-# Production traffic should use the canonical public host.
-# This workflow is retained only as a manual fallback to avoid dual automatic deployments.
