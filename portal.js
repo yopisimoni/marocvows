@@ -169,7 +169,7 @@ async function socialSignIn(e){
   const provider=btn.dataset.oauthProvider;
   const out=$('#oauthStatus');
   if(!oauthProviders().includes(provider)){
-    status(out,`${provider[0].toUpperCase()+provider.slice(1)} sign-in is prepared but not enabled yet.`, '');
+    status(out,`${provider[0].toUpperCase()+provider.slice(1)} sign-in is prepared but not enabled yet.`,'');
     return;
   }
   try{
@@ -186,7 +186,7 @@ async function forgotPassword(e){
   const out=$('.status',form);
   try{
     await loadSupabase();
-    const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:location.origin+'/account.html?mode=recovery'});
+    const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:authReturnUrl()});
     if(error)throw error;
     status(out,'If that email belongs to a MarocVows account, a password-reset link has been sent.','success');
   }catch(err){status(out,err?.message||'Could not send the password-reset email.','error');}
@@ -316,7 +316,8 @@ async function boot(){
   $('#weddingRequestForm')?.addEventListener('submit',submitWeddingRequest);
   $('#providerForm')?.addEventListener('submit',submitProvider);
 
-  if(!portalEnabled()&&!recoveryMode){renderAuthState();return;}
+  const authRuntimeNeeded=portalEnabled()||recoveryMode||!!$('#recoveryShell');
+  if(!authRuntimeNeeded){renderAuthState();return;}
   try{await loadSupabase();renderAuthState();}
   catch(_e){const gate=$('#portalGate');if(gate){gate.hidden=false;gate.textContent='The account service is temporarily unavailable.';}}
 }
