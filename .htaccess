@@ -4,7 +4,8 @@ ErrorDocument 404 /404.html
 
 RewriteEngine On
 
-# Block any leftover internal QA pages from public access.
+# Block leftover internal QA pages from public access, except the one controlled portal test page.
+RewriteCond %{REQUEST_URI} !^/qa-portal-20260910\.html$ [NC]
 RewriteRule ^qa(?:-|/).* - [F,L,NC]
 
 # Redirect the old query-string vendor URL to the clean public URL.
