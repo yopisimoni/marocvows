@@ -27,17 +27,15 @@ const vendors={
   'traiteur-brahim-event':{name:'Traiteur Brahim Event',city:'Meknès',address:'Ryad, Meknès',phone:'+212665971050'}
 };
 const qs=new URLSearchParams(location.search);
-const pathMatch=location.pathname.match(/^\/vendors\/([a-z0-9-]+)\/?$/i);
-const slug=(pathMatch&&pathMatch[1])||qs.get('slug');
+const slug=qs.get('slug');
 const v=vendors[slug];
 const $=s=>document.querySelector(s);
 if(!v){$('#profile').innerHTML='<h1>Vendor not found</h1><p><a href="/">Return to the MarocVows directory</a>.</p>';return;}
-const cleanPath=`/vendors/${slug}/`;
-if(!pathMatch && qs.get('slug')) history.replaceState({},'',cleanPath);
+const publicUrl=`https://www.marocvows.com/vendor-profile.html?slug=${encodeURIComponent(slug)}`;
 document.title=`${v.name} | ${v.city} Wedding Caterer | MarocVows`;
 const desc=`View contact and location details for ${v.name}, a wedding caterer listed in ${v.city}, Morocco. Confirm availability, pricing and services directly.`;
 let meta=document.querySelector('meta[name="description"]');if(meta)meta.content=desc;
-let canonical=document.querySelector('link[rel="canonical"]');if(!canonical){canonical=document.createElement('link');canonical.rel='canonical';document.head.appendChild(canonical);}canonical.href=`https://www.marocvows.com${cleanPath}`;
+let canonical=document.querySelector('link[rel="canonical"]');if(!canonical){canonical=document.createElement('link');canonical.rel='canonical';document.head.appendChild(canonical);}canonical.href=publicUrl;
 $('#name').textContent=v.name;$('#city').textContent=v.city;$('#address').textContent=v.address;$('#crumb').textContent=v.name;
 $('#category').textContent=v.publicCategory||'Wedding caterer & event service';
 $('#phoneRow').innerHTML=v.phone?`<a class="primary-btn" href="tel:${v.phone.replace(/\s+/g,'')}">Call ${v.phone}</a>`:'<span class="soft-note">Phone number not currently listed. Confirm contact details independently.</span>';
@@ -45,5 +43,5 @@ $('#mapLink').href='https://www.google.com/maps/search/?api=1&query='+encodeURIC
 if(v.website){const w=$('#websiteLink');w.href=v.website;w.hidden=false;}
 if(v.services&&v.services.length){$('#servicesBlock').hidden=false;$('#services').innerHTML=v.services.map(s=>`<span>${s}</span>`).join('');}
 if(v.publicCategory||v.publicRating||v.verifiedAt){const box=$('#publicSnapshot');const bits=[];if(v.publicCategory)bits.push(v.publicCategory);if(v.publicRating)bits.push(`${v.publicRating}/5 from ${v.publicReviewCount||0} public reviews`);$('#snapshotText').textContent=bits.join(' · ');$('#verifiedStamp').textContent=v.verifiedAt?`Public listing checked ${v.verifiedAt}. Ratings and review counts can change.`:'';box.classList.add('visible');}
-const ld={"@context":"https://schema.org","@type":"LocalBusiness","name":v.name,"address":v.address,"areaServed":v.city,"url":`https://www.marocvows.com${cleanPath}`};if(v.phone)ld.telephone=v.phone;if(v.website)ld.sameAs=[v.website];document.getElementById('vendorSchema').textContent=JSON.stringify(ld);
+const ld={"@context":"https://schema.org","@type":"LocalBusiness","name":v.name,"address":v.address,"areaServed":v.city,"url":publicUrl};if(v.phone)ld.telephone=v.phone;if(v.website)ld.sameAs=[v.website];document.getElementById('vendorSchema').textContent=JSON.stringify(ld);
 })();
