@@ -1,14 +1,14 @@
 (()=>{
 const slugify=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const cityRoutes={khenifra:'/wedding-caterers-khenifra.html',fes:'/wedding-caterers-fes.html',meknes:'/wedding-caterers-meknes.html'};
+function profileHref(name){return `/vendor-profile.html?slug=${encodeURIComponent(slugify(name))}`;}
 function enhanceCards(){
  document.querySelectorAll('.vendor-card').forEach(card=>{
    const title=card.querySelector('h2,h3,.vendor-name,strong');
    if(!title)return;
    const name=title.textContent.trim();
    if(!name)return;
-   const slug=slugify(name);
-   const href=`/vendors/${slug}/`;
+   const href=profileHref(name);
    if(title.tagName==='H2'||title.tagName==='H3'){
      if(!title.querySelector('a')) title.innerHTML=`<a class="vendor-title-link" href="${href}">${title.textContent}</a>`;
    }
