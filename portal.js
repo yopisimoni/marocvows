@@ -5,6 +5,8 @@ const $$=(s,root=document)=>[...root.querySelectorAll(s)];
 let supabase=null;
 let user=null;
 let recoveryMode=new URLSearchParams(location.search).get('mode')==='recovery';
+const callbackParams=new URLSearchParams(location.search);
+const callbackErrorCode=callbackParams.get('error_code')||'';
 
 function status(el,msg,type=''){
   if(!el)return;
@@ -35,8 +37,8 @@ async function loadSupabase(){
 function portalEnabled(){return cfg.portalFeaturesEnabled===true;}
 function oauthProviders(){return Array.isArray(cfg.oauthProviders)?cfg.oauthProviders:[];}
 function authReturnUrl(){
-  if(document.body?.dataset.authReturn==='self')return location.origin+location.pathname;
-  return location.origin+'/account.html';
+  const base=(cfg.domain||location.origin).replace(/\/$/,'');
+  return base+'/account.html';
 }
 function postAuthDestination(){
   if(recoveryMode)return '';
@@ -67,6 +69,21 @@ function enhancePasswordFields(){
     });
     wrap.appendChild(btn);
   });
+}
+
+function ensureResendConfirmation(){
+  const signUp=$('#signUpForm');
+  if(!signUp||$('#resendConfirmationForm'))return;
+  const wrap=document.createElement('details');
+  wrap.className='auth-details';
+  wrap.innerHTML=`<summary class="auth-text-link">Didn't receive the confirmation email?</summary>
+    <form id="resendConfirmationForm" class="review-form compact-form">
+      <label>Email<input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></label>
+      <div class="status"></div>
+      <button class="auth-secondary-btn" type="submit">Resend confirmation email</button>
+    </form>`;
+  signUp.insertAdjacentElement('afterend',wrap);
+  $('#resendConfirmationForm')?.addEventListener('submit',resendConfirmation);
 }
 
 function renderOauthButtons(){
@@ -107,17 +124,26 @@ function renderAuthState(){
 
   if(recoveryShell)recoveryShell.hidden=true;
 
+  // A successful confirmation callback creates a session on account.html.
+  // Route that confirmed user into onboarding even while the public portal flag remains off.
+  if(user){
+    const destination=postAuthDestination();
+    if(destination){location.replace(destination);return;}
+  }
+
   if(!portalEnabled()){
-    if(gate){gate.hidden=false;gate.textContent='The MarocVows account portal is built but not publicly open yet. We are finishing the final launch checks before collecting account data.';}
+    if(gate){
+      gate.hidden=false;
+      if(callbackErrorCode==='otp_expired'){
+        gate.innerHTML='That confirmation link has expired or was already used. <a href="qa-portal-20260910.html">Return to the private signup test</a> and use <strong>Resend confirmation email</strong>.';
+      }else{
+        gate.textContent='The MarocVows account portal is built but not publicly open yet. We are finishing the final launch checks before collecting account data.';
+      }
+    }
     if(authShell)authShell.hidden=true;
     if(memberShell)memberShell.hidden=true;
     $$('[data-auth-only]').forEach(el=>el.hidden=true);
     return;
-  }
-
-  if(user){
-    const destination=postAuthDestination();
-    if(destination){location.replace(destination);return;}
   }
 
   if(gate)gate.hidden=true;
@@ -152,9 +178,24 @@ async function signUp(e){
       status(out,'Account created.','success');
       renderAuthState();
     }else{
-      status(out,'Account created. Check your email to confirm it, then sign in.','success');
+      status(out,'Account created. Check your email to confirm it. If the link expires, use Resend confirmation email below.','success');
+      const resendEmail=$('#resendConfirmationForm [name="email"]');
+      if(resendEmail)resendEmail.value=email;
     }
   }catch(err){status(out,err?.message||'Could not create the account.','error');}
+}
+
+async function resendConfirmation(e){
+  e.preventDefault();
+  const form=e.currentTarget;
+  const email=$('[name="email"]',form).value.trim();
+  const out=$('.status',form);
+  try{
+    await loadSupabase();
+    const {error}=await supabase.auth.resend({type:'signup',email,options:{emailRedirectTo:authReturnUrl()}});
+    if(error)throw error;
+    status(out,'A fresh confirmation email has been sent. Use the newest email only.','success');
+  }catch(err){status(out,err?.message||'Could not resend the confirmation email.','error');}
 }
 
 async function signIn(e){
@@ -321,6 +362,7 @@ function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&'
 
 async function boot(){
   enhancePasswordFields();
+  ensureResendConfirmation();
   renderOauthButtons();
   $('#signUpForm')?.addEventListener('submit',signUp);
   $('#signInForm')?.addEventListener('submit',signIn);
@@ -333,7 +375,7 @@ async function boot(){
   $('#weddingRequestForm')?.addEventListener('submit',submitWeddingRequest);
   $('#providerForm')?.addEventListener('submit',submitProvider);
 
-  const authRuntimeNeeded=portalEnabled()||recoveryMode||!!$('#recoveryShell');
+  const authRuntimeNeeded=portalEnabled()||recoveryMode||!!$('#recoveryShell')||callbackErrorCode!=='';
   if(!authRuntimeNeeded){renderAuthState();return;}
   try{await loadSupabase();renderAuthState();}
   catch(_e){const gate=$('#portalGate');if(gate){gate.hidden=false;gate.textContent='The account service is temporarily unavailable.';}}
