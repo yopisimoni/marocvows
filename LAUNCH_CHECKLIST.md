@@ -52,7 +52,8 @@ Verification note, 9 Sep 2026: GitHub Pages, DNS validation and HTTPS are config
 
 ## Before account/submission portal is enabled
 
-- [ ] Create a monitored MarocVows contact/privacy email
+- [x] Create monitored MarocVows contact/privacy emails: `hello@marocvows.com` and `privacy@marocvows.com`
+- [x] Publish those monitored addresses on the Contact and Privacy pages
 - [ ] Publish final operator/data-controller identity
 - [ ] Complete applicable privacy/CNDP and cross-border processing formalities
 - [ ] Update the Privacy Policy and Terms for wedding-help requests and provider applications
