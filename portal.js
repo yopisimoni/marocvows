@@ -38,6 +38,14 @@ function authReturnUrl(){
   if(document.body?.dataset.authReturn==='self')return location.origin+location.pathname;
   return location.origin+'/account.html';
 }
+function postAuthDestination(){
+  if(recoveryMode)return '';
+  const params=new URLSearchParams(location.search);
+  if(params.get('onboarded')==='1')return '';
+  if(location.pathname.endsWith('/qa-portal-20260910.html'))return 'welcome.html?qa=1';
+  if(location.pathname.endsWith('/account.html'))return 'welcome.html';
+  return '';
+}
 
 function enhancePasswordFields(){
   $$('input[type="password"]').forEach(input=>{
@@ -105,6 +113,11 @@ function renderAuthState(){
     if(memberShell)memberShell.hidden=true;
     $$('[data-auth-only]').forEach(el=>el.hidden=true);
     return;
+  }
+
+  if(user){
+    const destination=postAuthDestination();
+    if(destination){location.replace(destination);return;}
   }
 
   if(gate)gate.hidden=true;
@@ -237,9 +250,7 @@ async function chooseRole(e){
       $$('[data-qa-role]').forEach(el=>el.hidden=true);
       const panel=$(target);
       if(panel){panel.hidden=false;panel.scrollIntoView({behavior:'smooth',block:'start'});}
-    }else if(target){
-      location.href=target;
-    }
+    }else if(target){location.href=target;}
   }catch(err){status(out,err?.message||'Could not save your choice.','error');}
 }
 
