@@ -656,12 +656,13 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://crystalfes.com/fr"
+    "sourceUrl": "https://crystalfes.com/fr",
+    "verificationMethod": "official-website"
   },
   {
     "slug": "palais-amani-fes",
@@ -687,12 +688,13 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://www.palaisamani.com/en/faq/"
+    "sourceUrl": "https://www.palaisamani.com/en/faq/",
+    "verificationMethod": "official-website"
   },
   {
     "slug": "riad-fes",
@@ -718,12 +720,13 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://riadfes.com/en/weddings.html"
+    "sourceUrl": "https://riadfes.com/en/weddings.html",
+    "verificationMethod": "official-website"
   },
   {
     "slug": "riad-el-amine-fes",
@@ -844,12 +847,13 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://www.hotelmenzehdalia.com/"
+    "sourceUrl": "https://www.hotelmenzehdalia.com/",
+    "verificationMethod": "official-website"
   },
   {
     "slug": "royal-lens-photographe-meknes",
@@ -1082,11 +1086,12 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://www.darmakhtara.com/en/packs-mariages"
+    "sourceUrl": "https://www.darmakhtara.com/en/packs-mariages",
+    "verificationMethod": "official-website"
   }
 ];
