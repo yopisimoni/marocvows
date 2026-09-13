@@ -34,7 +34,7 @@ function renderCategoryDiscovery(){
 function enhanceCards(){
   document.querySelectorAll('.vendor-card').forEach(card=>{
     const share=card.querySelector('[data-share]');
-    const slug=share?.dataset.share;
+    const slug=card.dataset.providerSlug||share?.dataset.share;
     if(!slug)return;
     const actions=card.querySelector('.card-actions')||card;
     let btn=actions.querySelector('.compare-toggle');
