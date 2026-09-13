@@ -1,7 +1,11 @@
 (()=>{
 const slugify=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const cityRoutes={khenifra:'/wedding-caterers-khenifra.html',fes:'/wedding-caterers-fes.html',meknes:'/wedding-caterers-meknes.html'};
-function profileHref(name){return `/vendor-profile.html?slug=${encodeURIComponent(slugify(name))}`;}
+function profileHref(name){
+ const slug=slugify(name);
+ const p=(window.MAROCVOWS_PROVIDERS||[]).find(x=>x.slug===slug);
+ return p?.verified?`/providers/${encodeURIComponent(slug)}.html`:`/vendor-profile.html?slug=${encodeURIComponent(slug)}`;
+}
 function enhanceCards(){
  document.querySelectorAll('.vendor-card').forEach(card=>{
    const title=card.querySelector('h2,h3,.vendor-name,strong');
