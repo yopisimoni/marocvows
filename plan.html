@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plan Your Wedding or Party | MarocVows</title>
+<meta name="description" content="Build a simple wedding or party service checklist, then browse matching Moroccan event providers by city on MarocVows.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://www.marocvows.com/plan.html">
+<link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="premium.css?v=20260913-3"><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+.plan-shell{max-width:1050px;margin:auto;padding:70px 20px 100px}.plan-shell h1{font:500 clamp(2.8rem,7vw,5.8rem)/.95 Georgia,serif;letter-spacing:-.05em;color:var(--forest);margin:.25rem 0 1rem}.plan-lead{max-width:760px;color:var(--muted);font-size:1.05rem}.planner-card{margin-top:28px;background:var(--card);border:1px solid var(--line);border-radius:28px;padding:clamp(22px,4vw,38px);box-shadow:var(--shadow)}.planner-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}.planner-card label{display:grid;gap:7px;font-weight:850}.planner-card select{border:1px solid var(--line);border-radius:13px;padding:12px;background:white}.service-checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}.service-check{display:flex!important;grid-template-columns:none!important;flex-direction:row!important;align-items:center;gap:9px!important;padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:#fff}.service-check input{width:auto}.plan-actions{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}.plan-results{display:grid;gap:10px;margin-top:26px}.plan-result{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:15px 16px;border:1px solid var(--line);border-radius:16px;background:#f7f1e7;text-decoration:none}.plan-result strong{color:var(--forest)}.plan-result span{color:var(--muted);font-size:.85rem}.privacy-note{margin-top:18px;color:var(--muted);font-size:.82rem}@media(max-width:760px){.planner-row{grid-template-columns:1fr}.service-checks{grid-template-columns:1fr 1fr}}@media(max-width:500px){.service-checks{grid-template-columns:1fr}.plan-result{align-items:flex-start;flex-direction:column}}
+</style></head><body>
+<header class="site-header"><a class="brand" href="/"><span class="brand-mark">MV</span><span>MarocVows</span></a><div class="header-actions"><a class="ghost-btn" href="/">Browse providers</a></div></header>
+<main class="plan-shell"><p class="eyebrow">Plan your event</p><h1>Build your wedding or party team.</h1><p class="plan-lead">Choose your event, city and the services you need. MarocVows will turn that into a practical provider checklist you can browse one category at a time.</p>
+<section class="planner-card">
+<div class="planner-row"><label>Event type<select id="eventType"><option>Wedding</option><option>Engagement</option><option>Birthday</option><option>Family celebration</option><option>Corporate event</option><option>Other event</option></select></label>
+<label>City<select id="planCity"><option value="fes">Fès</option><option value="meknes">Meknès</option><option value="khenifra">Khénifra</option></select></label></div>
+<h2>Which services do you need?</h2>
+<div class="service-checks" id="serviceChecks"></div>
+<div class="plan-actions"><button id="buildPlan" class="primary-btn" type="button">Build my provider checklist</button><a class="secondary-btn" href="wedding-help.html">I need personal help</a></div>
+<p class="privacy-note">This planning tool works in your browser and does not submit your selections to MarocVows.</p>
+<div id="planResults" class="plan-results"></div>
+</section></main>
+<footer><div><strong>MarocVows</strong><p>© 2026 · Morocco</p></div><nav class="footer-links"><a href="/">Directory</a><a href="provider-submit.html">For professionals</a><a href="contact.html">Contact</a></nav></footer>
+<script src="providers.js"></script><script src="plan.js"></script>
+</body></html>
