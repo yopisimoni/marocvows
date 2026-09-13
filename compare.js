@@ -7,10 +7,10 @@ const grid=document.querySelector('#compareGrid');
 const esc=s=>{const d=document.createElement('div');d.textContent=String(s??'');return d.innerHTML;};
 function contact(p){
  const out=[];
- if(p.phone)out.push('<a class="primary-btn" href="tel:'+p.phone+'">Call</a>');
- if(p.whatsapp)out.push('<a class="secondary-btn" href="https://wa.me/'+p.whatsapp.replace(/\\D/g,'')+'" target="_blank" rel="noopener">WhatsApp</a>');
- if(p.email)out.push('<a class="secondary-btn" href="mailto:'+esc(p.email)+'">Email</a>');
- if(p.website)out.push('<a class="secondary-btn" href="'+esc(p.website)+'" target="_blank" rel="noopener">Website</a>');
+ if(p.phone)out.push('<a class="primary-btn" data-provider-slug="'+p.slug+'" data-provider-action="call" href="tel:'+p.phone+'">Call</a>');
+ if(p.whatsapp)out.push('<a class="secondary-btn" data-provider-slug="'+p.slug+'" data-provider-action="whatsapp" href="https://wa.me/'+p.whatsapp.replace(/\\D/g,'')+'" target="_blank" rel="noopener">WhatsApp</a>');
+ if(p.email)out.push('<a class="secondary-btn" data-provider-slug="'+p.slug+'" data-provider-action="email" href="mailto:'+esc(p.email)+'">Email</a>');
+ if(p.website)out.push('<a class="secondary-btn" data-provider-slug="'+p.slug+'" data-provider-action="website" href="'+esc(p.website)+'" target="_blank" rel="noopener">Website</a>');
  out.push('<a class="secondary-btn" href="/vendor-profile.html?slug='+encodeURIComponent(p.slug)+'">Full profile</a>');
  return out.join('');
 }

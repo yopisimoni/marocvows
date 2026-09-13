@@ -656,12 +656,13 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://crystalfes.com/fr"
+    "sourceUrl": "https://crystalfes.com/fr",
+    "verificationMethod": "official-website"
   },
   {
     "slug": "palais-amani-fes",
@@ -687,12 +688,13 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://www.palaisamani.com/en/faq/"
+    "sourceUrl": "https://www.palaisamani.com/en/faq/",
+    "verificationMethod": "official-website"
   },
   {
     "slug": "riad-fes",
@@ -718,12 +720,13 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://riadfes.com/en/weddings.html"
+    "sourceUrl": "https://riadfes.com/en/weddings.html",
+    "verificationMethod": "official-website"
   },
   {
     "slug": "riad-el-amine-fes",
@@ -749,12 +752,14 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://www.riadelaminefes.com/events"
+    "sourceUrl": "https://www.riadelaminefes.com/events",
+    "verificationMethod": "official-website",
+    "verificationSource": "https://www.riadelaminefes.com/contact"
   },
   {
     "slug": "redlens-studio-fes",
@@ -844,12 +849,13 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://www.hotelmenzehdalia.com/"
+    "sourceUrl": "https://www.hotelmenzehdalia.com/",
+    "verificationMethod": "official-website"
   },
   {
     "slug": "royal-lens-photographe-meknes",
@@ -904,12 +910,14 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://maisonscene.ma/agence/meknes/"
+    "sourceUrl": "https://maisonscene.ma/agence/meknes/",
+    "verificationMethod": "official-website",
+    "verificationSource": "https://maisonscene.ma/agence/meknes/"
   },
   {
     "slug": "rihab-fes-wedding-planner",
@@ -964,12 +972,14 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://ms-artdeco.com/services-msartdeco/"
+    "sourceUrl": "https://ms-artdeco.com/services-msartdeco/",
+    "verificationMethod": "official-website",
+    "verificationSource": "https://ms-artdeco.com/"
   },
   {
     "slug": "fleurchic-fes",
@@ -994,12 +1004,14 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://fleurchic.ma/contact/"
+    "sourceUrl": "https://fleurchic.ma/contact/",
+    "verificationMethod": "official-website",
+    "verificationSource": "https://fleurchic.ma/contact/"
   },
   {
     "slug": "negafa-rachida-houria-meknes",
@@ -1082,11 +1094,12 @@ window.MAROCVOWS_PROVIDERS=[
     "photos": [],
     "videos": [],
     "claimed": false,
-    "verified": false,
+    "verified": true,
     "verifiedAt": "2026-09-13",
     "averageRating": 0,
     "reviewCount": 0,
     "sourceType": "official-website",
-    "sourceUrl": "https://www.darmakhtara.com/en/packs-mariages"
+    "sourceUrl": "https://www.darmakhtara.com/en/packs-mariages",
+    "verificationMethod": "official-website"
   }
 ];
