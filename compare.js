@@ -11,7 +11,7 @@ function contact(p){
  if(p.whatsapp)out.push('<a class="secondary-btn" data-provider-slug="'+p.slug+'" data-provider-action="whatsapp" href="https://wa.me/'+p.whatsapp.replace(/\\D/g,'')+'" target="_blank" rel="noopener">WhatsApp</a>');
  if(p.email)out.push('<a class="secondary-btn" data-provider-slug="'+p.slug+'" data-provider-action="email" href="mailto:'+esc(p.email)+'">Email</a>');
  if(p.website)out.push('<a class="secondary-btn" data-provider-slug="'+p.slug+'" data-provider-action="website" href="'+esc(p.website)+'" target="_blank" rel="noopener">Website</a>');
- out.push('<a class="secondary-btn" href="/vendor-profile.html?slug='+encodeURIComponent(p.slug)+'">Full profile</a>');
+ out.push('<a class="secondary-btn" href="'+(p.verified?('/providers/'+encodeURIComponent(p.slug)+'.html'):('/vendor-profile.html?slug='+encodeURIComponent(p.slug)))+'">Full profile</a>');
  return out.join('');
 }
 if(!list.length){grid.outerHTML='<div class="compare-empty"><strong>No providers selected.</strong><p>Return to the directory and add up to three providers to compare.</p><a class="primary-btn" href="/">Browse providers</a></div>';return;}

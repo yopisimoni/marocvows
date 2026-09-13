@@ -26,5 +26,8 @@ const qs=new URLSearchParams(location.search);
 if(location.pathname.endsWith('/vendor-profile.html')||location.pathname.endsWith('vendor-profile.html')){
  const slug=qs.get('slug');
  if(slug)record(slug,'profile_view');
+}else{
+ const m=location.pathname.match(/\/providers\/([^/]+)\.html$/);
+ if(m)record(decodeURIComponent(m[1]),'profile_view');
 }
 })();
