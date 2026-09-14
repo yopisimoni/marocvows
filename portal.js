@@ -86,7 +86,7 @@ function ensureResendConfirmation(){
 
 function renderOauthButtons(){
   const enabled=oauthProviders();
-  const buttons=$('[data-oauth-provider]');
+  const buttons=[...document.querySelectorAll('[data-oauth-provider]')];
   const row=$('.simple-social-row');
   const divider=$('.auth-divider');
   if(!enabled.length){
