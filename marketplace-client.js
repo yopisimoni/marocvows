@@ -2,6 +2,14 @@
 const providers=window.MAROCVOWS_PROVIDERS||[];
 const KEY='marocvows-shortlist';
 const max=3;
+const lang=()=>localStorage.getItem('marocvows-lang')||'en';
+const ui={
+ en:{need:'What do you need?',start:'Start with the service.',hint:'Choose a category, then narrow by city. Only categories with real provider supply are shown.',provider:n=>n===1?'1 provider':n+' providers',compare:'Compare',comparing:'✓ Comparing',limit:'You can compare up to 3 providers at a time.',drawer:'Compare providers',selected:n=>n+'/'+max+' selected',now:'Compare now',add:'Add to compare',added:'✓ Added to compare'},
+ ar:{need:'ماذا تحتاج؟',start:'ابدأ بالخدمة.',hint:'اختر نوع الخدمة ثم حدّد المدينة. نعرض فقط الفئات التي تحتوي على مقدمي خدمات فعليين.',provider:n=>n===1?'مقدم خدمة واحد':n+' مقدمي خدمات',compare:'قارن',comparing:'✓ ضمن المقارنة',limit:'يمكنك مقارنة 3 مقدمي خدمات كحد أقصى.',drawer:'مقارنة مقدمي الخدمات',selected:n=>n+'/'+max+' محدد',now:'قارن الآن',add:'أضف للمقارنة',added:'✓ تمت الإضافة للمقارنة'},
+ fr:{need:'De quoi avez-vous besoin ?',start:'Commencez par le service.',hint:'Choisissez une catégorie puis affinez par ville. Seules les catégories avec de vrais prestataires sont affichées.',provider:n=>n===1?'1 prestataire':n+' prestataires',compare:'Comparer',comparing:'✓ En comparaison',limit:'Vous pouvez comparer jusqu’à 3 prestataires.',drawer:'Comparer les prestataires',selected:n=>n+'/'+max+' sélectionnés',now:'Comparer maintenant',add:'Ajouter à la comparaison',added:'✓ Ajouté à la comparaison'},
+ es:{need:'¿Qué necesitas?',start:'Empieza por el servicio.',hint:'Elige una categoría y después una ciudad. Solo mostramos categorías con proveedores reales.',provider:n=>n===1?'1 proveedor':n+' proveedores',compare:'Comparar',comparing:'✓ Comparando',limit:'Puedes comparar hasta 3 proveedores.',drawer:'Comparar proveedores',selected:n=>n+'/'+max+' seleccionados',now:'Comparar ahora',add:'Añadir a comparar',added:'✓ Añadido a comparar'}
+};
+const txt=()=>ui[lang()]||ui.en;
 const get=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]').filter(Boolean).slice(0,max)}catch{return[]}};
 const save=v=>localStorage.setItem(KEY,JSON.stringify(v.slice(0,max)));
 const bySlug=s=>providers.find(p=>p.slug===s);
@@ -9,7 +17,7 @@ function toggle(slug){
   let list=get();
   if(list.includes(slug)) list=list.filter(x=>x!==slug);
   else if(list.length<max) list.push(slug);
-  else {alert('You can compare up to 3 providers at a time.');return;}
+  else {alert(txt().limit);return;}
   save(list);renderAll();
 }
 function categoryLabel(k){
@@ -23,7 +31,7 @@ function renderCategoryDiscovery(){
   const categories=Object.entries(counts).filter(([,n])=>n>0).sort((a,b)=>b[1]-a[1]);
   const section=document.createElement('section');
   section.className='service-discovery';
-  section.innerHTML='<div class="service-discovery-head"><div><p class="eyebrow">What do you need?</p><h2>Start with the service.</h2></div><p>Choose a category, then narrow by city. Only categories with real provider supply are shown.</p></div><div class="service-chip-grid">'+categories.map(([k,n])=>`<button type="button" data-category-jump="${k}"><strong>${categoryLabel(k)}</strong><span>${n} provider${n===1?'':'s'}</span></button>`).join('')+'</div>';
+  const t=txt();section.innerHTML='<div class="service-discovery-head"><div><p class="eyebrow">'+t.need+'</p><h2>'+t.start+'</h2></div><p>'+t.hint+'</p></div><div class="service-chip-grid">'+categories.map(([k,n])=>`<button type="button" data-category-jump="${k}"><strong>${categoryLabel(k)}</strong><span>${t.provider(n)}</span></button>`).join('')+'</div>';
   search.insertAdjacentElement('afterend',section);
   section.querySelectorAll('[data-category-jump]').forEach(btn=>btn.addEventListener('click',()=>{
     const select=document.querySelector('#categoryFilter');
@@ -40,14 +48,14 @@ function enhanceCards(){
     let btn=actions.querySelector('.compare-toggle');
     if(!btn){btn=document.createElement('button');btn.type='button';btn.className='compare-toggle';btn.addEventListener('click',()=>toggle(slug));actions.appendChild(btn);}
     const selected=get().includes(slug);
-    btn.textContent=selected?'✓ Comparing':'Compare';
+    btn.textContent=selected?txt().comparing:txt().compare;
     btn.classList.toggle('active',selected);
     btn.setAttribute('aria-pressed',String(selected));
   });
 }
 function enhanceProfile(){
   if(!document.querySelector('.profile-shell'))return;
-  const slug=new URLSearchParams(location.search).get('slug');
+  const dynamicSlug=new URLSearchParams(location.search).get('slug');const staticMatch=location.pathname.match(/\/providers\/([^/]+)\.html$/);const slug=dynamicSlug||(staticMatch?decodeURIComponent(staticMatch[1]):'');
   if(!slug||!bySlug(slug))return;
   let btn=document.querySelector('#profileCompareButton');
   if(!btn){
@@ -55,7 +63,7 @@ function enhanceProfile(){
     btn.addEventListener('click',()=>toggle(slug));
     document.querySelector('.profile-actions')?.appendChild(btn);
   }
-  const selected=get().includes(slug);btn.textContent=selected?'✓ Added to compare':'Add to compare';btn.classList.toggle('active',selected);
+  const selected=get().includes(slug);btn.textContent=selected?txt().added:txt().add;btn.classList.toggle('active',selected);
 }
 function renderDrawer(){
   let drawer=document.querySelector('#compareDrawer');
@@ -63,10 +71,10 @@ function renderDrawer(){
   const list=get().map(bySlug).filter(Boolean);
   if(!list.length){drawer.hidden=true;return;}
   drawer.hidden=false;
-  drawer.innerHTML=`<div><strong>Compare providers</strong><span>${list.length}/${max} selected</span></div><div class="compare-drawer-items">${list.map(p=>`<span>${p.name}<button type="button" data-remove-compare="${p.slug}" aria-label="Remove ${p.name}">×</button></span>`).join('')}</div><a class="primary-btn" href="/compare.html?slugs=${encodeURIComponent(list.map(p=>p.slug).join(','))}">Compare now</a>`;
+  const t=txt();drawer.innerHTML=`<div><strong>${t.drawer}</strong><span>${t.selected(list.length)}</span></div><div class="compare-drawer-items">${list.map(p=>`<span>${p.name}<button type="button" data-remove-compare="${p.slug}" aria-label="Remove ${p.name}">×</button></span>`).join('')}</div><a class="primary-btn" href="/compare.html?slugs=${encodeURIComponent(list.map(p=>p.slug).join(','))}">${t.now}</a>`;
   drawer.querySelectorAll('[data-remove-compare]').forEach(b=>b.addEventListener('click',()=>toggle(b.dataset.removeCompare)));
 }
-function renderAll(){renderCategoryDiscovery();enhanceCards();enhanceProfile();renderDrawer();}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderAll);else renderAll();
+function renderAll(){document.querySelector('.service-discovery')?.remove();renderCategoryDiscovery();enhanceCards();enhanceProfile();renderDrawer();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderAll);else renderAll();document.querySelector('#language')?.addEventListener('change',()=>setTimeout(renderAll,0));
 new MutationObserver(()=>{enhanceCards();renderDrawer();}).observe(document.documentElement,{subtree:true,childList:true});
 })();
