@@ -3,7 +3,7 @@ const cfg=window.MAROCVOWS_CONFIG||{};
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const params=new URLSearchParams(location.search);
-const qaMode=params.get('qa')==='1';
+const qaMode=false;
 let supabase=null;
 let user=null;
 
@@ -51,10 +51,8 @@ function selectedValues(name,root=document){
 function setContinueTargets(){
   const client=$('#clientContinue');
   const provider=$('#providerContinue');
-  if(qaMode){
-    if(client)client.href='qa-portal-20260910.html?onboarded=1#qa-client';
-    if(provider)provider.href='qa-portal-20260910.html?onboarded=1#qa-provider';
-  }
+  if(client)client.href='wedding-help.html';
+  if(provider)provider.href='provider-submit.html';
 }
 
 function fillProfile(profile){
@@ -118,11 +116,15 @@ async function saveProvider(e){
 async function signOut(){
   try{await supabase.auth.signOut();}catch(_e){}
   const base=document.body.dataset.authPage||'account.html';
-  location.href=qaMode?`${base}?v=simple3`:base;
+  location.href=base;
 }
 
 async function boot(){
   setContinueTargets();
+  if(cfg.portalFeaturesEnabled!==true){
+    location.replace(document.body.dataset.authPage||'account.html');
+    return;
+  }
   try{
     await loadSupabase();
     const {data,error}=await supabase.auth.getSession();
@@ -130,7 +132,7 @@ async function boot(){
     user=data.session?.user||null;
     if(!user){
       const base=document.body.dataset.authPage||'account.html';
-      location.replace(qaMode?`${base}?v=simple3`:base);
+      location.replace(base);
       return;
     }
     $('#memberEmail').textContent=user.email||'';

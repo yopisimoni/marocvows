@@ -7,6 +7,7 @@ let user=null;
 let recoveryMode=new URLSearchParams(location.search).get('mode')==='recovery';
 const callbackParams=new URLSearchParams(location.search);
 const callbackErrorCode=callbackParams.get('error_code')||'';
+const t=(key,fallback)=>window.MarocVowsLocale?.t?.(key,fallback)||fallback;
 
 function status(el,msg,type=''){
   if(!el)return;
@@ -44,7 +45,6 @@ function postAuthDestination(){
   if(recoveryMode)return '';
   const params=new URLSearchParams(location.search);
   if(params.get('onboarded')==='1')return '';
-  if(location.pathname.endsWith('/qa-portal-20260910.html'))return 'welcome.html?qa=1';
   if(location.pathname.endsWith('/account.html'))return 'welcome.html';
   return '';
 }
@@ -59,13 +59,13 @@ function enhancePasswordFields(){
     const btn=document.createElement('button');
     btn.type='button';
     btn.className='password-toggle';
-    btn.textContent='Show';
-    btn.setAttribute('aria-label','Show password');
+    btn.textContent=t('Show','Show');
+    btn.setAttribute('aria-label',t('Show password','Show password'));
     btn.addEventListener('click',()=>{
       const showing=input.type==='text';
       input.type=showing?'password':'text';
-      btn.textContent=showing?'Show':'Hide';
-      btn.setAttribute('aria-label',showing?'Show password':'Hide password');
+      btn.textContent=showing?t('Show','Show'):t('Hide','Hide');
+      btn.setAttribute('aria-label',showing?t('Show password','Show password'):t('Hide password','Hide password'));
     });
     wrap.appendChild(btn);
   });
@@ -88,11 +88,22 @@ function ensureResendConfirmation(){
 
 function renderOauthButtons(){
   const enabled=oauthProviders();
-  $$('[data-oauth-provider]').forEach(btn=>{
+  const buttons=$('[data-oauth-provider]');
+  const row=$('.simple-social-row');
+  const divider=$('.auth-divider');
+  if(!enabled.length){
+    if(row)row.hidden=true;
+    if(divider)divider.hidden=true;
+    buttons.forEach(btn=>btn.hidden=true);
+    return;
+  }
+  if(row)row.hidden=false;
+  if(divider)divider.hidden=false;
+  buttons.forEach(btn=>{
     const provider=btn.dataset.oauthProvider;
     const active=enabled.includes(provider);
+    btn.hidden=!active;
     btn.disabled=!active;
-    btn.title=active?'':`${provider[0].toUpperCase()+provider.slice(1)} sign-in will activate after provider setup in Supabase.`;
   });
 }
 
@@ -126,7 +137,7 @@ function renderAuthState(){
 
   // A successful confirmation callback creates a session on account.html.
   // Route that confirmed user into onboarding even while the public portal flag remains off.
-  if(user){
+  if(user&&portalEnabled()){
     const destination=postAuthDestination();
     if(destination){location.replace(destination);return;}
   }
@@ -135,9 +146,9 @@ function renderAuthState(){
     if(gate){
       gate.hidden=false;
       if(callbackErrorCode==='otp_expired'){
-        gate.innerHTML='That confirmation link has expired or was already used. <a href="qa-portal-20260910.html">Return to the private signup test</a> and use <strong>Resend confirmation email</strong>.';
+        gate.innerHTML=t('expiredConfirmation','That confirmation link has expired or was already used. Return to this page and request a fresh confirmation email when account access opens.');
       }else{
-        gate.textContent='The MarocVows account portal is built but not publicly open yet. We are finishing the final launch checks before collecting account data.';
+        gate.textContent=t('portalClosed','The MarocVows account portal is built but not publicly open yet. We are finishing the final launch checks before collecting account data.');
       }
     }
     if(authShell)authShell.hidden=true;
@@ -375,10 +386,10 @@ async function boot(){
   $('#weddingRequestForm')?.addEventListener('submit',submitWeddingRequest);
   $('#providerForm')?.addEventListener('submit',submitProvider);
 
-  const authRuntimeNeeded=portalEnabled()||recoveryMode||!!$('#recoveryShell')||callbackErrorCode!=='';
+  const authRuntimeNeeded=portalEnabled()||recoveryMode||callbackErrorCode!==''||location.hash.includes('access_token=')||location.hash.includes('error_code=');
   if(!authRuntimeNeeded){renderAuthState();return;}
   try{await loadSupabase();renderAuthState();}
-  catch(_e){const gate=$('#portalGate');if(gate){gate.hidden=false;gate.textContent='The account service is temporarily unavailable.';}}
+  catch(_e){const gate=$('#portalGate');if(gate){gate.hidden=false;gate.textContent=t('authUnavailable','The account service is temporarily unavailable.');}}
 }
 
 document.addEventListener('DOMContentLoaded',boot);
