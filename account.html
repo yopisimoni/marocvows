@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MarocVows Account | Sign in or create an account</title>
-<meta name="description" content="Create or access a MarocVows account, then choose whether you are looking for wedding services or offering them.">
+<title>MarocVows Account | Secure email access</title>
+<meta name="description" content="Access MarocVows securely by email, then choose whether you are looking for wedding services or offering them.">
 <meta name="robots" content="noindex,nofollow">
 <link rel="canonical" href="https://www.marocvows.com/account.html">
 <link rel="stylesheet" href="styles.css">
@@ -26,66 +26,21 @@
 <div id="portalGate" class="auth-note" hidden></div>
 
 <section id="authShell" class="simple-auth-card">
-<div class="simple-social-row">
+<div class="simple-social-row" hidden>
 <button class="oauth-btn" type="button" data-oauth-provider="google">Continue with Google</button>
 <button class="oauth-btn" type="button" data-oauth-provider="facebook">Continue with Facebook</button>
 </div>
 <div id="oauthStatus" class="status"></div>
-<div class="auth-divider"><span>or use email</span></div>
+<div class="auth-divider" hidden><span>or use email</span></div>
 
-<div class="auth-tabs" role="tablist" aria-label="Account access">
-<button class="auth-tab is-active" type="button" role="tab" aria-selected="true" data-auth-tab="signup">Sign up</button>
-<button class="auth-tab" type="button" role="tab" aria-selected="false" data-auth-tab="signin">Sign in</button>
-</div>
-
-<div data-auth-panel="signup">
-<form id="signUpForm" class="review-form">
+<form id="emailAccessForm" class="review-form">
+<p class="soft-note">No password required. Enter your email and MarocVows will send a secure one-time sign-in link. If you are new, this also creates your account after you confirm the email.</p>
 <label>Email<input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></label>
-<label>Password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
-<label>Confirm password<input name="confirm_password" type="password" autocomplete="new-password" minlength="8" required></label>
 <label class="tiny auth-check"><input type="checkbox" required><span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms</a> and acknowledge the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
 <div class="status"></div>
-<button class="auth-primary-btn" type="submit">Create account</button>
+<button class="auth-primary-btn" type="submit">Email me a secure sign-in link</button>
 </form>
-</div>
-
-<div data-auth-panel="signin" hidden>
-<form id="signInForm" class="review-form">
-<label>Email<input name="email" type="email" autocomplete="email" placeholder="you@example.com" required></label>
-<label>Password<input name="password" type="password" autocomplete="current-password" required></label>
-<div class="status"></div>
-<button class="auth-primary-btn" type="submit">Sign in</button>
-</form>
-<div class="simple-auth-links">
-<details class="auth-details">
-<summary class="auth-text-link">Forgot password?</summary>
-<form id="forgotPasswordForm" class="review-form compact-form">
-<label>Email<input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></label>
-<div class="status"></div>
-<button class="auth-secondary-btn" type="submit">Send reset link</button>
-</form>
-</details>
-<details class="auth-details">
-<summary class="auth-text-link">Sign in without password</summary>
-<form id="magicLinkForm" class="review-form compact-form">
-<label>Email<input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></label>
-<div class="status"></div>
-<button class="auth-secondary-btn" type="submit">Email me a sign-in link</button>
-</form>
-</details>
-</div>
-</div>
-</section>
-
-<section id="recoveryShell" hidden class="simple-auth-card">
-<p class="eyebrow">Password recovery</p>
-<h2>Choose a new password</h2>
-<form id="updatePasswordForm" class="review-form">
-<label>New password<input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
-<label>Confirm new password<input name="confirm_password" type="password" autocomplete="new-password" minlength="8" required></label>
-<div class="status"></div>
-<button class="auth-primary-btn" type="submit">Update password</button>
-</form>
+<p class="tiny" style="margin-top:14px">For security, sign-in links are single-use and expire automatically.</p>
 </section>
 
 <section id="memberShell" hidden class="simple-role-shell">
