@@ -4,7 +4,7 @@ const $=(s,root=document)=>root.querySelector(s);
 const $$=(s,root=document)=>[...root.querySelectorAll(s)];
 let supabase=null;
 let user=null;
-let recoveryMode=new URLSearchParams(location.search).get('mode')==='recovery';
+let recoveryMode=false;
 const callbackParams=new URLSearchParams(location.search);
 const callbackErrorCode=callbackParams.get('error_code')||'';
 const t=(key,fallback)=>window.MarocVowsLocale?.t?.(key,fallback)||fallback;
@@ -26,7 +26,6 @@ async function loadSupabase(){
   });
   supabase=window.supabase.createClient(cfg.supabaseUrl,cfg.publishableKey,{auth:{persistSession:true,detectSessionInUrl:true}});
   supabase.auth.onAuthStateChange((event,session)=>{
-    if(event==='PASSWORD_RECOVERY')recoveryMode=true;
     user=session?.user||null;
     renderAuthState();
   });
@@ -42,7 +41,6 @@ function authReturnUrl(){
   return base+'/account.html';
 }
 function postAuthDestination(){
-  if(recoveryMode)return '';
   const params=new URLSearchParams(location.search);
   if(params.get('onboarded')==='1')return '';
   if(location.pathname.endsWith('/account.html'))return 'welcome.html';
@@ -120,20 +118,8 @@ function renderAuthState(){
   const gate=$('#portalGate');
   const authShell=$('#authShell');
   const memberShell=$('#memberShell');
-  const recoveryShell=$('#recoveryShell');
   const userEmail=$('#userEmail');
   const signOut=$('#signOut');
-
-  if(recoveryMode){
-    if(gate)gate.hidden=true;
-    if(authShell)authShell.hidden=true;
-    if(memberShell)memberShell.hidden=true;
-    if(recoveryShell)recoveryShell.hidden=false;
-    $$('[data-auth-only]').forEach(el=>el.hidden=true);
-    return;
-  }
-
-  if(recoveryShell)recoveryShell.hidden=true;
 
   // A successful confirmation callback creates a session on account.html.
   // Route that confirmed user into onboarding even while the public portal flag remains off.
@@ -236,6 +222,24 @@ async function quickEmailSignIn(e){
     if(error)throw error;
     status(out,'If that email belongs to a MarocVows account, a secure sign-in link has been sent.','success');
   }catch(err){status(out,err?.message||'Could not send the sign-in link.','error');}
+}
+
+async function emailAccess(e){
+  e.preventDefault();
+  const form=e.currentTarget;
+  const email=$('[name="email"]',form).value.trim();
+  const out=$('.status',form);
+  try{
+    await loadSupabase();
+    const {error}=await supabase.auth.signInWithOtp({
+      email,
+      options:{shouldCreateUser:true,emailRedirectTo:authReturnUrl()}
+    });
+    if(error)throw error;
+    status(out,t('emailLinkSent','Check your email for a secure MarocVows sign-in link. Use the newest email only.'),'success');
+  }catch(err){
+    status(out,err?.message||t('emailLinkError','Could not send the secure sign-in link. Please try again.'),'error');
+  }
 }
 
 async function socialSignIn(e){
@@ -372,21 +376,15 @@ async function loadMemberHistory(){
 function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));}
 
 async function boot(){
-  enhancePasswordFields();
-  ensureResendConfirmation();
   renderOauthButtons();
-  $('#signUpForm')?.addEventListener('submit',signUp);
-  $('#signInForm')?.addEventListener('submit',signIn);
-  $('#magicLinkForm')?.addEventListener('submit',quickEmailSignIn);
-  $('#forgotPasswordForm')?.addEventListener('submit',forgotPassword);
-  $('#updatePasswordForm')?.addEventListener('submit',updatePassword);
+  $('#emailAccessForm')?.addEventListener('submit',emailAccess);
   $$('[data-oauth-provider]').forEach(btn=>btn.addEventListener('click',socialSignIn));
   $$('[data-role-choice]').forEach(btn=>btn.addEventListener('click',chooseRole));
   $('#signOut')?.addEventListener('click',signOut);
   $('#weddingRequestForm')?.addEventListener('submit',submitWeddingRequest);
   $('#providerForm')?.addEventListener('submit',submitProvider);
 
-  const authRuntimeNeeded=portalEnabled()||recoveryMode||callbackErrorCode!==''||location.hash.includes('access_token=')||location.hash.includes('error_code=');
+  const authRuntimeNeeded=portalEnabled()||callbackErrorCode!==''||location.hash.includes('access_token=')||location.hash.includes('error_code=');
   if(!authRuntimeNeeded){renderAuthState();return;}
   try{await loadSupabase();renderAuthState();}
   catch(_e){const gate=$('#portalGate');if(gate){gate.hidden=false;gate.textContent=t('authUnavailable','The account service is temporarily unavailable.');}}
