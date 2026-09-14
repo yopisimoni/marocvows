@@ -35,7 +35,7 @@ const initialCity=initialParams.get('city');
 if(initialCategory&&$('#categoryFilter')?.querySelector('option[value="'+CSS.escape(initialCategory)+'"]'))$('#categoryFilter').value=initialCategory;
 if(initialCity&&$('#cityFilter')?.querySelector('option[value="'+CSS.escape(initialCity)+'"]'))$('#cityFilter').value=initialCity;
 if(!cfg.communityFeaturesEnabled){
-  $('[data-community-only]').forEach(el=>el.hidden=true);
+  $$('[data-community-only]').forEach(el=>el.hidden=true);
   if($('#sort'))$('#sort').value='az';
 }
 setLang(lang);refreshRatings();
