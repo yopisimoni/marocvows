@@ -1,0 +1,38 @@
+# Project Control — MarocVows
+
+## Canonical identity
+- Project: MarocVows
+- Repository: yopisimoni/marocvows
+- Default branch: main
+- Production URL: https://www.marocvows.com/
+- Domain project: marocvows.com
+- Purpose: multilingual Morocco wedding discovery platform.
+- Current CNAME: www.marocvows.com
+
+## Scope boundaries
+- MarocVows is completely separate from MyFastOffer4U and all of its subdomains.
+- Do NOT reuse MyFastOffer4U analytics IDs, content, DNS assumptions, forms, SEO settings, or branding.
+- Do NOT mix this repo with unrelated social-content projects.
+
+## Product protections
+- Preserve multilingual behavior (English, Arabic/RTL, French, Spanish).
+- Preserve moderation/account/privacy gates unless explicitly changed.
+- Do not invent provider ratings or silently change review integrity rules.
+- Treat authentication, Supabase configuration, user submissions, and privacy-sensitive flows as protected.
+
+## Deployment protocol
+1. Read this file.
+2. Inspect the current repo and CNAME.
+3. Check production when the task concerns the live site.
+4. Make the smallest safe change.
+5. Commit.
+6. Verify GitHub Pages/deployment status when applicable.
+7. Check https://www.marocvows.com/ after deployment-related changes.
+
+## Definition of done
+- correct repo used;
+- change committed;
+- deployment/live site verified when applicable;
+- multilingual behavior preserved;
+- no unrelated project identifiers introduced;
+- no obvious regression.
