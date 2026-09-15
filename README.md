@@ -65,7 +65,7 @@ RLS is enabled for reviews, photo metadata, reports, wedding-help requests and p
 
 Production domain: `www.marocvows.com`.
 
-This repository contains a `CNAME` file for that hostname. GitHub Pages is configured from `main` / `(root)`, DNS validation has passed and Enforce HTTPS is enabled. The apex `marocvows.com` should redirect to the `www` production site after DNS/Pages propagation is complete.
+This repository contains a `CNAME` file for that hostname. GitHub Pages is configured from `main` / `(root)`, DNS validation has passed and Enforce HTTPS is enabled. The apex `marocvows.com` redirects to the canonical `https://www.marocvows.com/` production site. Treat this canonical-host decision as closed unless a future production regression is observed.
 
 ## Before enabling account submissions
 

@@ -46,10 +46,10 @@
 - [x] Apex `@` A records → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
 - [x] DNS check successful in GitHub Pages
 - [x] TLS certificate issued and Enforce HTTPS enabled
-- [ ] Confirm `https://www.marocvows.com/` returns the live MarocVows homepage after propagation
-- [ ] Confirm `https://marocvows.com` redirects to `https://www.marocvows.com/` after propagation
+- [x] `https://www.marocvows.com/` is the live production homepage
+- [x] `https://marocvows.com` redirects to `https://www.marocvows.com/`
 
-Verification note: GitHub Pages, DNS validation and HTTPS are configured. Final public URL and apex redirect verification are still required before Google submission.
+Verification note: canonical production host is permanently `https://www.marocvows.com/`. GitHub Pages DNS validation and Enforce HTTPS are configured, and the apex redirects to the canonical www host. Do not reopen www-vs-apex as a launch question unless a future production regression is observed.
 
 ## Before account/submission portal is enabled
 
@@ -81,8 +81,8 @@ Verification note: GitHub Pages, DNS validation and HTTPS are configured. Final 
 
 ## Before Google Search Console / sitemap submission
 
-- [ ] Final live check: `www` homepage returns 200 over HTTPS
-- [ ] Final redirect check: apex → canonical `www` HTTPS URL
+- [x] Canonical `www` homepage is live over HTTPS
+- [x] Apex redirects to canonical `https://www.marocvows.com/`
 - [ ] Crawl all indexable pages for 404s, broken internal links and accidental `noindex`
 - [ ] Confirm `robots.txt` returns 200 and references the production sitemap
 - [ ] Confirm `sitemap.xml` returns 200 and contains only canonical, indexable URLs
