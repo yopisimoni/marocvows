@@ -89,3 +89,8 @@ This repository contains a `CNAME` file for that hostname. GitHub Pages is confi
 ## Expansion
 
 Do not create empty city pages for SEO. Prove the three-city pilot first, then expand with researched local coverage to Casablanca, Rabat, Marrakech, Tanger, Agadir, Oujda, Tétouan, Kénitra and El Jadida.
+
+---
+
+**Portfolio:** https://yopisimoni.github.io  
+**GitHub:** https://github.com/yopisimoni
