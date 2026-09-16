@@ -5,7 +5,7 @@ const options=[
 ];
 const wrap=document.querySelector('#serviceChecks');
 const available=new Set(providers.map(p=>p.category));
-wrap.innerHTML=options.map(([value,label])=>'<label class="service-check"><input type="checkbox" value="'+value+'" '+(available.has(value)?'':'disabled')+'><span>'+label+(available.has(value)?'':' · coming soon')+'</span></label>').join('');
+wrap.innerHTML=options.map(([value,label])=>'<label class="service-check"><input type="checkbox" value="'+value+'" '+(available.has(value)?'':'disabled')+'><span>'+label+(available.has(value)?'':' · coming soon')+'</span></label>').join('');\nwindow.MarocVowsI18n?.apply(document);
 ['venue','caterer','photographer','dj'].forEach(v=>{const x=wrap.querySelector('input[value="'+v+'"]');if(x&&!x.disabled)x.checked=true;});
 document.querySelector('#buildPlan').addEventListener('click',()=>{
  const city=document.querySelector('#planCity').value;
