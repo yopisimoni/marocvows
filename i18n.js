@@ -70,7 +70,9 @@ function t(key,vars){
 }
 function translateDynamic(text){
   if(lang==='en')return text;
-  let m=text.match(/^(.+) in (Fès|Meknès|Khénifra) \\| MarocVows$/);\n  if(m){const connector=lang==='ar'?' في ':lang==='fr'?' à ':' en ';return m[1]+connector+m[2]+' | MarocVows';}\n  m=text.match(/^Call\\s+(.+)$/);
+  let m=text.match(/^(.+) in (Fès|Meknès|Khénifra) \| MarocVows$/);
+  if(m){const connector=lang==='ar'?' في ':lang==='fr'?' à ':' en ';return m[1]+connector+m[2]+' | MarocVows';}
+  m=text.match(/^Call\\s+(.+)$/);
   if(m)return t('Call')+' '+m[1];
   m=text.match(/^✓ Details verified by MarocVows · (.+)$/);
   if(m){
