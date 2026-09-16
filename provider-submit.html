@@ -41,7 +41,7 @@
 <h2>Business application</h2>
 <form id="providerForm" class="review-form">
 <label>Business / professional name<input name="business_name" maxlength="160" required></label>
-<label>Service category<select name="provider_type" required><option value="caterer">Wedding caterer</option><option value="venue">Wedding venue / hall</option><option value="planner">Wedding planner / event manager</option><option value="cook">Cook / kitchen team</option><option value="dj">DJ</option><option value="photographer">Photographer</option><option value="videographer">Videographer</option><option value="decorator">Decorator</option><option value="band">Band / musician</option><option value="florist">Florist</option><option value="beauty">Beauty / makeup</option><option value="henna">Henna artist</option><option value="transport">Wedding transport</option><option value="cake">Cake / pastry</option><option value="rentals">Event rentals</option><option value="other">Other wedding service</option></select></label>
+<label>Service category<select name="provider_type" data-service-select required><option value="caterer">Wedding caterer</option><option value="venue">Wedding venue / hall</option><option value="planner">Wedding planner / event manager</option><option value="cook">Cook / kitchen team</option><option value="dj">DJ</option><option value="photographer">Photographer</option><option value="videographer">Videographer</option><option value="decorator">Decorator</option><option value="band">Band / musician</option><option value="florist">Florist</option><option value="beauty">Beauty / makeup</option><option value="henna">Henna artist</option><option value="transport">Wedding transport</option><option value="cake">Cake / pastry</option><option value="rentals">Event rentals</option><option value="other">Other wedding service</option></select></label>
 <label>Contact person<input name="contact_name" maxlength="120" autocomplete="name" required></label>
 <label>Account / business email<input name="email" type="email" maxlength="254" data-account-email autocomplete="email" required></label>
 <label>Phone<input name="phone" maxlength="40" autocomplete="tel"></label>
@@ -66,6 +66,6 @@
 </div>
 </main>
 <footer><div><strong>MarocVows</strong><p>© 2026 · Morocco</p></div><nav class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="community-guidelines.html">Community Guidelines</a><a href="contact.html">Contact</a></nav></footer>
-<script src="config.js"></script><script src="auth-locale.js"></script><script src="/i18n.js"></script><script src="portal.js"></script>
+<script src="config.js"></script><script src="auth-locale.js"></script><script src="/i18n.js"></script><script src="/service-catalog.js"></script><script src="portal.js"></script>
 </body>
 </html>
