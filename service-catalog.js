@@ -63,7 +63,7 @@ function renderEventSelect(select){
 function renderChecks(container,{name,className='service-choice',variant='form',selected=[],disabledIds=[]}={}){
  if(!container)return;
  const selectedSet=new Set(selected),disabledSet=new Set(disabledIds);
- container.innerHTML=services.map(s=>'<label class="'+className+'"><input type="checkbox" name="'+name+'" value="'+s.id+'" '+(selectedSet.has(s.id)?'checked ':'')+(disabledSet.has(s.id)?'disabled ':' )+'> '+serviceLabel(s.id,variant)+'</label>').join('');
+ container.innerHTML=services.map(s=>'<label class="'+className+'"><input type="checkbox" name="'+name+'" value="'+s.id+'" '+(selectedSet.has(s.id)?'checked ':'')+(disabledSet.has(s.id)?'disabled ':'')+'> '+serviceLabel(s.id,variant)+'</label>').join('');
 }
 function rerenderManaged(){
  document.querySelectorAll('[data-service-select]').forEach(el=>renderServiceSelect(el,{includeAll:el.dataset.includeAll==='true',availableOnly:el.dataset.availableOnly==='true',variant:el.dataset.serviceVariant||'form'}));
