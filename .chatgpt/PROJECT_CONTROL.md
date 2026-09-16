@@ -43,6 +43,20 @@
 - `portalFeaturesEnabled` controls account access and authenticated wedding-help/provider flows.
 - `communityFeaturesEnabled` separately controls reviews, photos, reports and other community submissions.
 - Account UI must use `data-portal-only`; community UI must use `data-community-only`.
-- Passwordless auth is the intended production model: email magic link as baseline, optional Google/Facebook OAuth, and optional WhatsApp OTP through Supabase + Twilio/Twilio Verify.\n- Quick sign-in/sign-up should open in a lightweight modal/popup from the public site; account creation and sign-in share the same passwordless flows.\n- Never show an auth provider as active unless its backend provider configuration is complete and tested.
+- Passwordless auth is the intended production model: email magic link as baseline, optional Google/Facebook OAuth, and optional WhatsApp OTP through Supabase + Twilio/Twilio Verify.
+- Quick sign-in/sign-up should open in a lightweight modal/popup from the public site; account creation and sign-in share the same passwordless flows.
+- Never show an auth provider as active unless its backend provider configuration is complete and tested.
 - Keep `portalFeaturesEnabled:false` until applicable CNDP processing/transfer formalities and Supabase Auth production redirect configuration are complete.
 - Keep `communityFeaturesEnabled:false` until moderation, abuse controls and community-specific launch gates pass.
+
+
+## Localization architecture
+- Shared public-site language layer: `/i18n.js`.
+- Supported languages: English, Arabic, French and Spanish.
+- Shared preference key: `marocvows-lang`.
+- Arabic must set `document.documentElement.dir = "rtl"`; all other languages use LTR.
+- New public marketplace pages must load `/i18n.js`.
+- Provider names, addresses, phone numbers, URLs and other proper/business identifiers are not translated.
+- Dynamic marketplace controls must either use the shared layer or call `MarocVowsI18n.apply(...)` after rendering.
+- Existing legal/auth dictionaries may coexist during migration, but shared language state must remain synchronized through `marocvows-lang`.
+- Do not claim multilingual live QA complete until EN → AR → FR → ES switching is checked on the deployed site.
