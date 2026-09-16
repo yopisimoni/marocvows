@@ -43,6 +43,6 @@
 - `portalFeaturesEnabled` controls account access and authenticated wedding-help/provider flows.
 - `communityFeaturesEnabled` separately controls reviews, photos, reports and other community submissions.
 - Account UI must use `data-portal-only`; community UI must use `data-community-only`.
-- Passwordless email/magic-link auth is the intended production account method.
+- Passwordless auth is the intended production model: email magic link as baseline, optional Google/Facebook OAuth, and optional WhatsApp OTP through Supabase + Twilio/Twilio Verify.\n- Quick sign-in/sign-up should open in a lightweight modal/popup from the public site; account creation and sign-in share the same passwordless flows.\n- Never show an auth provider as active unless its backend provider configuration is complete and tested.
 - Keep `portalFeaturesEnabled:false` until applicable CNDP processing/transfer formalities and Supabase Auth production redirect configuration are complete.
 - Keep `communityFeaturesEnabled:false` until moderation, abuse controls and community-specific launch gates pass.
