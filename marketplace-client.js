@@ -20,14 +20,7 @@ function toggle(slug){
   else {alert(txt().limit);return;}
   save(list);renderAll();
 }
-const categoryLabels={
- en:{caterer:'Caterers',venue:'Venues',planner:'Planners',dj:'DJs',photographer:'Photographers',videographer:'Videographers',decorator:'Decorators',florist:'Florists',beauty:'Beauty',henna:'Henna',band:'Musicians',transport:'Transport',cake:'Cakes',rentals:'Rentals',other:'Other'},
- ar:{caterer:'مموّنو الحفلات',venue:'القاعات',planner:'المنظمون',dj:'دي جي',photographer:'المصورون',videographer:'مصورو الفيديو',decorator:'الديكور',florist:'الزهور',beauty:'التجميل',henna:'الحناء',band:'الموسيقيون',transport:'النقل',cake:'الحلويات',rentals:'التأجير',other:'أخرى'},
- fr:{caterer:'Traiteurs',venue:'Lieux',planner:'Organisateurs',dj:'DJs',photographer:'Photographes',videographer:'Vidéastes',decorator:'Décorateurs',florist:'Fleuristes',beauty:'Beauté',henna:'Henné',band:'Musiciens',transport:'Transport',cake:'Pâtisserie',rentals:'Locations',other:'Autre'},
- es:{caterer:'Catering',venue:'Lugares',planner:'Organizadores',dj:'DJs',photographer:'Fotógrafos',videographer:'Videógrafos',decorator:'Decoradores',florist:'Floristas',beauty:'Belleza',henna:'Henna',band:'Músicos',transport:'Transporte',cake:'Pastelería',rentals:'Alquileres',other:'Otro'}
-};
-function categoryLabel(k){return (categoryLabels[lang()]||categoryLabels.en)[k]||k;}
-function renderCategoryDiscovery(){
+function categoryLabel(k){return window.MarocVowsCatalog?.serviceLabel(k,'directory',lang())||k;}\nfunction renderCategoryDiscovery(){
   const search=document.querySelector('#directory');
   if(!search||document.querySelector('.service-discovery'))return;
   const counts={};
