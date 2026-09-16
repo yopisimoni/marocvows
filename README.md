@@ -32,7 +32,7 @@ Those account/submission pages are currently `noindex` and gated until privacy/c
 
 ## Account and submission portal
 
-`account.html` supports an email + password account flow through Supabase Auth.
+`account.html` supports passwordless email access through Supabase Auth. A secure one-time sign-in link creates or signs in the account after email confirmation.
 
 `wedding-help.html` writes authenticated requests to `wedding_requests`.
 
@@ -74,7 +74,8 @@ This repository contains a `CNAME` file for that hostname. GitHub Pages is confi
 - complete applicable privacy/CNDP and cross-border data formalities;
 - update Privacy/Terms for wedding-help requests and provider applications;
 - configure Supabase Auth Site URL and production redirect URLs;
-- test email/password signup, confirmation, sign-in, sign-out and both submission flows end to end;
+- set Supabase Auth Site URL to `https://www.marocvows.com/` and allow `https://www.marocvows.com/account.html` as a redirect URL;
+- test passwordless email signup/sign-in, confirmation callback, sign-out and both submission flows end to end;
 - add abuse/rate-limit controls before opening at scale;
 - then set `portalFeaturesEnabled:true`.
 
