@@ -36,3 +36,13 @@
 - multilingual behavior preserved;
 - no unrelated project identifiers introduced;
 - no obvious regression.
+
+
+## Account launch state
+- Public directory remains independent from account/community features.
+- `portalFeaturesEnabled` controls account access and authenticated wedding-help/provider flows.
+- `communityFeaturesEnabled` separately controls reviews, photos, reports and other community submissions.
+- Account UI must use `data-portal-only`; community UI must use `data-community-only`.
+- Passwordless email/magic-link auth is the intended production account method.
+- Keep `portalFeaturesEnabled:false` until applicable CNDP processing/transfer formalities and Supabase Auth production redirect configuration are complete.
+- Keep `communityFeaturesEnabled:false` until moderation, abuse controls and community-specific launch gates pass.
