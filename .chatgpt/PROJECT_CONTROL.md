@@ -60,3 +60,12 @@
 - Dynamic marketplace controls must either use the shared layer or call `MarocVowsI18n.apply(...)` after rendering.
 - Existing legal/auth dictionaries may coexist during migration, but shared language state must remain synchronized through `marocvows-lang`.
 - Do not claim multilingual live QA complete until EN → AR → FR → ES switching is checked on the deployed site.
+
+
+## Service taxonomy
+- Canonical service source: `/service-catalog.js`.
+- The shared catalog currently contains 19 service categories: venue, caterer, planner, negafa, cook, DJ, band/traditional music, photographer, videographer, decorator, florist, beauty, henna, cake/pastry, transport, rentals, invitations/gifts, entertainment and other.
+- Directory filters, planner, member onboarding, wedding-help requests and provider applications must use this catalog instead of maintaining independent category lists.
+- Provider names and existing provider records remain unchanged; adding a new provider category should use one of the canonical service IDs.
+- Planner event types are also defined in `/service-catalog.js`; the legacy onboarding value `party` is preserved for compatibility.
+- Planner recommendations must be filtered by actual provider supply in the selected city and remain user-editable.
