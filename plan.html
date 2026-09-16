@@ -11,14 +11,15 @@
 <header class="site-header"><a class="brand" href="/"><span class="brand-mark">MV</span><span>MarocVows</span></a><div class="header-actions"><a class="ghost-btn" href="/">Browse providers</a></div></header>
 <main class="plan-shell"><p class="eyebrow">Plan your event</p><h1>Build your wedding or party team.</h1><p class="plan-lead">Choose your event, city and the services you need. MarocVows will turn that into a practical provider checklist you can browse one category at a time.</p>
 <section class="planner-card">
-<div class="planner-row"><label>Event type<select id="eventType"><option>Wedding</option><option>Engagement</option><option>Birthday</option><option>Family celebration</option><option>Corporate event</option><option>Other event</option></select></label>
+<div class="planner-row"><label>Event type<select id="eventType" data-event-select><option>Wedding</option><option>Engagement</option><option>Birthday</option><option>Family celebration</option><option>Corporate event</option><option>Other event</option></select></label>
 <label>City<select id="planCity"><option value="fes">Fès</option><option value="meknes">Meknès</option><option value="khenifra">Khénifra</option></select></label></div>
 <h2>Which services do you need?</h2>
+<p id="planRecommendationNote" class="privacy-note"></p>
 <div class="service-checks" id="serviceChecks"></div>
 <div class="plan-actions"><button id="buildPlan" class="primary-btn" type="button">Build my provider checklist</button><a class="secondary-btn" href="wedding-help.html">I need personal help</a></div>
 <p class="privacy-note">This planning tool works in your browser and does not submit your selections to MarocVows.</p>
 <div id="planResults" class="plan-results"></div>
 </section></main>
 <footer><div><strong>MarocVows</strong><p>© 2026 · Morocco</p></div><nav class="footer-links"><a href="/">Directory</a><a href="provider-submit.html">For professionals</a><a href="contact.html">Contact</a></nav></footer>
-<script src="/i18n.js"></script><script src="providers.js"></script><script src="plan.js"></script>
+<script src="/i18n.js"></script><script src="providers.js"></script><script src="/service-catalog.js"></script><script src="plan.js"></script>
 </body></html>
