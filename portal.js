@@ -35,7 +35,7 @@ async function loadSupabase(){
 }
 
 function portalEnabled(){return cfg.portalFeaturesEnabled===true;}
-function oauthProviders(){return Array.isArray(cfg.oauthProviders)?cfg.oauthProviders:[];}
+function oauthProviders(){return Array.isArray(cfg.oauthProviders)?cfg.oauthProviders:[];}\nfunction whatsappEnabled(){return cfg.whatsappAuthEnabled===true;}\nlet whatsappPhone='';
 function authReturnUrl(){
   const base=(cfg.domain||location.origin).replace(/\/$/,'');
   return base+'/account.html';
@@ -89,20 +89,18 @@ function renderOauthButtons(){
   const buttons=[...document.querySelectorAll('[data-oauth-provider]')];
   const row=$('.simple-social-row');
   const divider=$('.auth-divider');
-  if(!enabled.length){
-    if(row)row.hidden=true;
-    if(divider)divider.hidden=true;
-    buttons.forEach(btn=>btn.hidden=true);
-    return;
-  }
-  if(row)row.hidden=false;
-  if(divider)divider.hidden=false;
+  const whatsapp=$('#whatsappStartButton');
+  const hasFastMethod=enabled.length>0||whatsappEnabled();
+  if(row)row.hidden=!hasFastMethod;
+  if(divider)divider.hidden=!hasFastMethod;
   buttons.forEach(btn=>{
     const provider=btn.dataset.oauthProvider;
     const active=enabled.includes(provider);
     btn.hidden=!active;
     btn.disabled=!active;
   });
+  if(whatsapp)whatsapp.hidden=!whatsappEnabled();
+  if(!whatsappEnabled()&&$('#whatsappAuthPanel'))$('#whatsappAuthPanel').hidden=true;
 }
 
 function renderRoleState(){
@@ -146,7 +144,7 @@ function renderAuthState(){
   if(gate)gate.hidden=true;
   if(authShell)authShell.hidden=!!user;
   if(memberShell)memberShell.hidden=!user;
-  if(userEmail)userEmail.textContent=user?.email||'';
+  if(userEmail)userEmail.textContent=user?.email||user?.phone||'';
   if(signOut)signOut.hidden=!user;
   $$('[data-auth-only]').forEach(el=>el.hidden=!user);
 
@@ -240,6 +238,43 @@ async function emailAccess(e){
   }catch(err){
     status(out,err?.message||t('emailLinkError','Could not send the secure sign-in link. Please try again.'),'error');
   }
+}
+
+function normalizePhone(value){
+  const cleaned=String(value||'').replace(/[\s().-]/g,'');
+  return /^\+[1-9]\d{7,14}$/.test(cleaned)?cleaned:'';
+}
+
+async function sendWhatsappOtp(e){
+  e.preventDefault();
+  const form=e.currentTarget;
+  const out=$('#oauthStatus');
+  const phone=normalizePhone(form.phone.value);
+  if(!whatsappEnabled()){status(out,'WhatsApp sign-in is not enabled yet.','');return;}
+  if(!phone){status(out,'Use an international phone number such as +2126…','error');return;}
+  try{
+    await loadSupabase();
+    const {error}=await supabase.auth.signInWithOtp({phone,options:{channel:'whatsapp'}});
+    if(error)throw error;
+    whatsappPhone=phone;
+    $('#whatsappVerifyForm').hidden=false;
+    status(out,'We sent a verification code in WhatsApp.','success');
+  }catch(err){status(out,err?.message||'Could not send the WhatsApp code.','error');}
+}
+
+async function verifyWhatsappOtp(e){
+  e.preventDefault();
+  const token=e.currentTarget.token.value.trim();
+  const out=$('#oauthStatus');
+  if(!whatsappPhone||!token)return;
+  try{
+    await loadSupabase();
+    const {data,error}=await supabase.auth.verifyOtp({phone:whatsappPhone,token,type:'sms'});
+    if(error)throw error;
+    user=data.user||data.session?.user||null;
+    status(out,'Signed in.','success');
+    renderAuthState();
+  }catch(err){status(out,err?.message||'Could not verify the WhatsApp code.','error');}
 }
 
 async function socialSignIn(e){
@@ -378,7 +413,10 @@ function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&'
 async function boot(){
   renderOauthButtons();
   $('#emailAccessForm')?.addEventListener('submit',emailAccess);
-  $$('[data-oauth-provider]').forEach(btn=>btn.addEventListener('click',socialSignIn));
+  $('[data-oauth-provider]').forEach(btn=>btn.addEventListener('click',socialSignIn));
+  $('#whatsappStartButton')?.addEventListener('click',()=>{$('#whatsappAuthPanel').hidden=false;});
+  $('#whatsappSendForm')?.addEventListener('submit',sendWhatsappOtp);
+  $('#whatsappVerifyForm')?.addEventListener('submit',verifyWhatsappOtp);
   $$('[data-role-choice]').forEach(btn=>btn.addEventListener('click',chooseRole));
   $('#signOut')?.addEventListener('click',signOut);
   $('#weddingRequestForm')?.addEventListener('submit',submitWeddingRequest);
