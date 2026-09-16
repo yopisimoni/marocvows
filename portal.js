@@ -35,7 +35,9 @@ async function loadSupabase(){
 }
 
 function portalEnabled(){return cfg.portalFeaturesEnabled===true;}
-function oauthProviders(){return Array.isArray(cfg.oauthProviders)?cfg.oauthProviders:[];}\nfunction whatsappEnabled(){return cfg.whatsappAuthEnabled===true;}\nlet whatsappPhone='';
+function oauthProviders(){return Array.isArray(cfg.oauthProviders)?cfg.oauthProviders:[];}
+function whatsappEnabled(){return cfg.whatsappAuthEnabled===true;}
+let whatsappPhone='';
 function authReturnUrl(){
   const base=(cfg.domain||location.origin).replace(/\/$/,'');
   return base+'/account.html';
