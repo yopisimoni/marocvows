@@ -20,7 +20,8 @@ function toggle(slug){
   else {alert(txt().limit);return;}
   save(list);renderAll();
 }
-function categoryLabel(k){return window.MarocVowsCatalog?.serviceLabel(k,'directory',lang())||k;}\nfunction renderCategoryDiscovery(){
+function categoryLabel(k){return window.MarocVowsCatalog?.serviceLabel(k,'directory',lang())||k;}
+function renderCategoryDiscovery(){
   const search=document.querySelector('#directory');
   if(!search||document.querySelector('.service-discovery'))return;
   const counts={};
