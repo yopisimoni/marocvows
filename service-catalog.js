@@ -26,7 +26,7 @@ const events=[
 {id:'engagement',labels:{en:'Engagement',ar:'خطوبة',fr:'Fiançailles',es:'Compromiso'},recommended:['venue','caterer','planner','negafa','photographer','decorator','florist','beauty','henna','cake']},
 {id:'henna',labels:{en:'Henna celebration',ar:'ليلة الحناء',fr:'Cérémonie du henné',es:'Celebración de henna'},recommended:['venue','caterer','negafa','photographer','band','decorator','beauty','henna','cake']},
 {id:'birthday',labels:{en:'Birthday',ar:'عيد ميلاد',fr:'Anniversaire',es:'Cumpleaños'},recommended:['venue','caterer','photographer','dj','decorator','cake','entertainment']},
-{id:'family',labels:{en:'Family celebration',ar:'احتفال عائلي',fr:'Fête familiale',es:'Celebración familiar'},recommended:['venue','caterer','photographer','band','decorator','cake','entertainment']},
+{id:'party',labels:{en:'Family celebration',ar:'احتفال عائلي',fr:'Fête familiale',es:'Celebración familiar'},recommended:['venue','caterer','photographer','band','decorator','cake','entertainment']},
 {id:'corporate',labels:{en:'Corporate event',ar:'فعالية مهنية',fr:'Événement professionnel',es:'Evento corporativo'},recommended:['venue','caterer','planner','photographer','dj','decorator','transport','rentals']},
 {id:'other',labels:{en:'Other event',ar:'مناسبة أخرى',fr:'Autre événement',es:'Otro evento'},recommended:['venue','caterer','planner','photographer','dj','decorator']}
 ];
@@ -73,7 +73,8 @@ function rerenderManaged(){
    renderChecks(el,{name:el.dataset.serviceName||'services',className:el.dataset.serviceClass||'service-choice',variant:el.dataset.serviceVariant||'form',selected});
  });
 }
-document.addEventListener('marocvows:languagechange',()=>setTimeout(rerenderManaged,0));\nif(document.readyState==='loading')document.addEventListener('DOMContentLoaded',rerenderManaged);else rerenderManaged();
+document.addEventListener('marocvows:languagechange',()=>setTimeout(rerenderManaged,0));
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',rerenderManaged);else rerenderManaged();
 
 window.MarocVowsCatalog={services,events,serviceLabel,eventLabel,recommendations,renderServiceSelect,renderEventSelect,renderChecks,rerenderManaged};
 })();
