@@ -69,3 +69,11 @@
 - Provider names and existing provider records remain unchanged; adding a new provider category should use one of the canonical service IDs.
 - Planner event types are also defined in `/service-catalog.js`; the legacy onboarding value `party` is preserved for compatibility.
 - Planner recommendations must be filtered by actual provider supply in the selected city and remain user-editable.
+
+
+## Automated live visual QA
+- Production browser QA is defined in `.github/workflows/live-visual-qa.yml` and `tests/live-qa.spec.js`.
+- It must test the real `https://www.marocvows.com` deployment, not a local mock.
+- Coverage includes EN/FR/AR/ES switching, Arabic RTL, canonical service filtering, event/city-aware planner recommendations, verified provider translation, mobile overflow and key-route HTTP success.
+- Screenshots are uploaded as the `marocvows-live-qa-screenshots` workflow artifact.
+- Do not mark live visual QA complete unless the production workflow passes.
