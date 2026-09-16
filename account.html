@@ -29,8 +29,19 @@
 <div class="simple-social-row" hidden>
 <button class="oauth-btn" type="button" data-oauth-provider="google">Continue with Google</button>
 <button class="oauth-btn" type="button" data-oauth-provider="facebook">Continue with Facebook</button>
+<button id="whatsappStartButton" class="oauth-btn" type="button" hidden>Continue with WhatsApp</button>
 </div>
 <div id="oauthStatus" class="status"></div>
+<div id="whatsappAuthPanel" class="quick-auth-panel" hidden>
+<form id="whatsappSendForm" class="review-form">
+<label>WhatsApp<input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+212 6..." required></label>
+<button class="auth-secondary-btn" type="submit">Send WhatsApp code</button>
+</form>
+<form id="whatsappVerifyForm" class="review-form" hidden>
+<label>Verification code<input name="token" inputmode="numeric" autocomplete="one-time-code" maxlength="8" required></label>
+<button class="auth-primary-btn" type="submit">Verify and continue</button>
+</form>
+</div>
 <div class="auth-divider" hidden><span>or use email</span></div>
 
 <form id="emailAccessForm" class="review-form">
