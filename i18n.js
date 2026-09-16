@@ -61,6 +61,12 @@ function currentLang(){
   return supported.includes(html)?html:'en';
 }
 let lang=currentLang();
+const textState=new WeakMap();
+const attrState=new WeakMap();
+let metaTitleBase='';
+let metaTitleLast='';
+let metaDescriptionBase='';
+let metaDescriptionLast='';
 function interpolate(str,vars){
   return String(str).replace(/\{(\w+)\}/g,(_,k)=>vars&&vars[k]!=null?String(vars[k]):'');
 }
@@ -85,13 +91,28 @@ function translateDynamic(text){
 }
 function replaceTextNode(node){
   if(!node.nodeValue||!node.nodeValue.trim())return;
-  const original=node.nodeValue;
-  const trimmed=original.trim();
-  const translated=translateDynamic(trimmed);
-  if(translated===trimmed)return;
-  const lead=original.match(/^\s*/)?.[0]||'';
-  const tail=original.match(/\s*$/)?.[0]||'';
-  node.nodeValue=lead+translated+tail;
+  const raw=node.nodeValue;
+  const trimmed=raw.trim();
+  let state=textState.get(node);
+  if(!state||trimmed!==state.last){
+    state={base:trimmed,last:trimmed,lead:raw.match(/^\s*/)?.[0]||'',tail:raw.match(/\s*$/)?.[0]||''};
+  }
+  const translated=translateDynamic(state.base);
+  state.last=translated;
+  textState.set(node,state);
+  node.nodeValue=state.lead+translated+state.tail;
+}
+function translateAttribute(el,name){
+  const current=el.getAttribute(name);
+  if(current==null)return;
+  let state=attrState.get(el)||{};
+  let item=state[name];
+  if(!item||current!==item.last)item={base:current,last:current};
+  const translated=translateDynamic(item.base);
+  item.last=translated;
+  state[name]=item;
+  attrState.set(el,state);
+  if(current!==translated)el.setAttribute(name,translated);
 }
 function translateTree(root=document.body){
   if(!root)return;
@@ -103,8 +124,8 @@ function translateTree(root=document.body){
     }
   });
   const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(replaceTextNode);
-  root.querySelectorAll?.('[placeholder]').forEach(el=>{const x=translateDynamic(el.getAttribute('placeholder'));if(x!==el.getAttribute('placeholder'))el.setAttribute('placeholder',x)});
-  root.querySelectorAll?.('[aria-label]').forEach(el=>{const x=translateDynamic(el.getAttribute('aria-label'));if(x!==el.getAttribute('aria-label'))el.setAttribute('aria-label',x)});
+  root.querySelectorAll?.('[placeholder]').forEach(el=>translateAttribute(el,'placeholder'));
+  root.querySelectorAll?.('[aria-label]').forEach(el=>translateAttribute(el,'aria-label'));
   root.querySelectorAll?.('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n)});
 }
 function ensureSwitcher(){
@@ -119,10 +140,19 @@ function ensureSwitcher(){
 }
 function updateMeta(){
   const title=document.title;
-  const mapped=translateDynamic(title);
-  if(mapped!==title)document.title=mapped;
+  if(!metaTitleBase||title!==metaTitleLast)metaTitleBase=title;
+  const mapped=translateDynamic(metaTitleBase);
+  metaTitleLast=mapped;
+  if(document.title!==mapped)document.title=mapped;
+
   const meta=document.querySelector('meta[name="description"]');
-  if(meta){const val=meta.getAttribute('content')||'';const translated=translateDynamic(val);if(translated!==val)meta.setAttribute('content',translated)}
+  if(meta){
+    const val=meta.getAttribute('content')||'';
+    if(!metaDescriptionBase||val!==metaDescriptionLast)metaDescriptionBase=val;
+    const translated=translateDynamic(metaDescriptionBase);
+    metaDescriptionLast=translated;
+    if(val!==translated)meta.setAttribute('content',translated);
+  }
 }
 function apply(root=document){
   document.documentElement.lang=lang;
