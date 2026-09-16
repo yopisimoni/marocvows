@@ -32,7 +32,7 @@ Those account/submission pages are currently `noindex` and gated until privacy/c
 
 ## Account and submission portal
 
-`account.html` supports passwordless email access through Supabase Auth. A secure one-time sign-in link creates or signs in the account after email confirmation.
+`account.html` supports passwordless authentication through Supabase Auth. Email magic links are the baseline method; Google/Facebook OAuth can be enabled through `oauthProviders`, and WhatsApp OTP can be enabled through `whatsappAuthEnabled` after a Twilio/Twilio Verify WhatsApp sender is configured.
 
 `wedding-help.html` writes authenticated requests to `wedding_requests`.
 
@@ -75,7 +75,7 @@ This repository contains a `CNAME` file for that hostname. GitHub Pages is confi
 - update Privacy/Terms for wedding-help requests and provider applications;
 - configure Supabase Auth Site URL and production redirect URLs;
 - set Supabase Auth Site URL to `https://www.marocvows.com/` and allow `https://www.marocvows.com/account.html` as a redirect URL;
-- test passwordless email signup/sign-in, confirmation callback, sign-out and both submission flows end to end;
+- test passwordless email signup/sign-in, confirmation callback and sign-out;\n- configure and test Google/Facebook OAuth before adding them to `oauthProviders`;\n- configure Twilio/Twilio Verify + an approved WhatsApp sender before setting `whatsappAuthEnabled:true`;\n- test WhatsApp OTP request + verification and both submission flows end to end;
 - add abuse/rate-limit controls before opening at scale;
 - then set `portalFeaturesEnabled:true`.
 
