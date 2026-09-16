@@ -73,7 +73,7 @@ function rerenderManaged(){
    renderChecks(el,{name:el.dataset.serviceName||'services',className:el.dataset.serviceClass||'service-choice',variant:el.dataset.serviceVariant||'form',selected});
  });
 }
-document.addEventListener('marocvows:languagechange',()=>setTimeout(rerenderManaged,0));
+document.addEventListener('marocvows:languagechange',()=>setTimeout(rerenderManaged,0));\nif(document.readyState==='loading')document.addEventListener('DOMContentLoaded',rerenderManaged);else rerenderManaged();
 
 window.MarocVowsCatalog={services,events,serviceLabel,eventLabel,recommendations,renderServiceSelect,renderEventSelect,renderChecks,rerenderManaged};
 })();
