@@ -1,24 +1,53 @@
 name: Live Visual QA
 
 on:
-  workflow_run:
-    workflows: ["pages build and deployment"]
-    types: [completed]
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
+  checks: read
 
 jobs:
   production-visual-qa:
-    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main') }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout deployed commit
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && 'main' || github.event.workflow_run.head_sha }}
+
+      - name: Wait for this commit to deploy to GitHub Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          success=0
+          for attempt in $(seq 1 60); do
+            json=$(curl -fsSL \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${REPO}/commits/${SHA}/check-runs")
+            status=$(printf '%s' "$json" | jq -r '[.check_runs[] | select(.name=="deploy")][0].status // "missing"')
+            conclusion=$(printf '%s' "$json" | jq -r '[.check_runs[] | select(.name=="deploy")][0].conclusion // ""')
+            echo "Pages deploy check: ${status} ${conclusion} (attempt ${attempt}/60)"
+            if [ "$status" = "completed" ] && [ "$conclusion" = "success" ]; then
+              success=1
+              break
+            fi
+            if [ "$status" = "completed" ] && [ -n "$conclusion" ] && [ "$conclusion" != "success" ]; then
+              echo "Pages deployment failed: ${conclusion}"
+              exit 1
+            fi
+            sleep 5
+          done
+          if [ "$success" -ne 1 ]; then
+            echo "Timed out waiting for GitHub Pages deployment."
+            exit 1
+          fi
+          # Allow the custom-domain edge to receive the just-completed Pages release.
+          sleep 10
 
       - name: Set up Node
         uses: actions/setup-node@v4
