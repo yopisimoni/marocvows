@@ -21,21 +21,23 @@ jobs:
       - name: Repair multi-element selectors
         run: |
           python - <<'PY'
+          import re
           from pathlib import Path
 
           path = Path('app.js')
           source = path.read_text()
-          replacements = {
-              "$('[data-share]').forEach": "$$('[data-share]').forEach",
-              "$('[data-clear-filters]').forEach": "$$('[data-clear-filters]').forEach",
-              "$('[data-quick-oauth-provider]').forEach": "$$('[data-quick-oauth-provider]').forEach",
-          }
+          selectors = [
+              "[data-share]",
+              "[data-clear-filters]",
+              "[data-quick-oauth-provider]",
+          ]
 
           changed = source
-          for old, new in replacements.items():
-              changed = changed.replace(old, new)
+          for selector in selectors:
+              pattern = re.escape("$('" + selector + "').forEach")
+              changed = re.sub(r'(?<!\$)' + pattern, "$$('" + selector + "').forEach", changed)
 
-          leftovers = [old for old in replacements if old in changed]
+          leftovers = [selector for selector in selectors if re.search(r'(?<!\$)' + re.escape("$('" + selector + "').forEach"), changed)]
           if leftovers:
               raise SystemExit(f'Homepage selector repair incomplete: {leftovers}')
 
