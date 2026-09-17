@@ -46,8 +46,39 @@ jobs:
             echo "Timed out waiting for GitHub Pages deployment."
             exit 1
           fi
-          # Allow the custom-domain edge to receive the just-completed Pages release.
           sleep 10
+
+      - name: Diagnose production routes
+        run: |
+          for path in / /index.html /plan.html /wedding-caterers-fes.html; do
+            echo "===== ${path} ====="
+            curl -sSIL --max-time 20 \
+              -o "/tmp/headers-$(echo "$path" | tr '/.' '__')" \
+              -w 'effective=%{url_effective} status=%{http_code} connect=%{time_connect} start=%{time_starttransfer} total=%{time_total}\n' \
+              "https://www.marocvows.com${path}" || echo "curl_failed=$?"
+            cat "/tmp/headers-$(echo "$path" | tr '/.' '__')" 2>/dev/null || true
+            echo
+          done
+
+          echo '===== root GET first bytes ====='
+          curl -sS --max-time 20 -D /tmp/root-get-headers \
+            -o /tmp/root-get-body \
+            -w 'status=%{http_code} bytes=%{size_download} total=%{time_total}\n' \
+            https://www.marocvows.com/ || echo "root_get_failed=$?"
+          cat /tmp/root-get-headers 2>/dev/null || true
+          wc -c /tmp/root-get-body 2>/dev/null || true
+          head -c 300 /tmp/root-get-body 2>/dev/null || true
+          echo
+
+          echo '===== index GET first bytes ====='
+          curl -sS --max-time 20 -D /tmp/index-get-headers \
+            -o /tmp/index-get-body \
+            -w 'status=%{http_code} bytes=%{size_download} total=%{time_total}\n' \
+            https://www.marocvows.com/index.html || echo "index_get_failed=$?"
+          cat /tmp/index-get-headers 2>/dev/null || true
+          wc -c /tmp/index-get-body 2>/dev/null || true
+          head -c 300 /tmp/index-get-body 2>/dev/null || true
+          echo
 
       - name: Set up Node
         uses: actions/setup-node@v4
