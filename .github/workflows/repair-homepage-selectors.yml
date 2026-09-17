@@ -1,0 +1,62 @@
+name: Repair Homepage Selectors
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/repair-homepage-selectors.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Repair multi-element selectors
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('app.js')
+          source = path.read_text()
+          replacements = {
+              "$('[data-share]').forEach": "$$('[data-share]').forEach",
+              "$('[data-clear-filters]').forEach": "$$('[data-clear-filters]').forEach",
+              "$('[data-quick-oauth-provider]').forEach": "$$('[data-quick-oauth-provider]').forEach",
+          }
+
+          changed = source
+          for old, new in replacements.items():
+              changed = changed.replace(old, new)
+
+          leftovers = [old for old in replacements if old in changed]
+          if leftovers:
+              raise SystemExit(f'Homepage selector repair incomplete: {leftovers}')
+
+          if changed == source:
+              print('Selectors already repaired; nothing to commit.')
+          else:
+              path.write_text(changed)
+              print('Repaired homepage multi-element selectors.')
+          PY
+
+      - name: Validate JavaScript
+        run: node --check app.js
+
+      - name: Commit repair
+        run: |
+          if git diff --quiet -- app.js; then
+            echo 'No app.js change required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app.js
+          git commit -m 'Fix homepage multi-element selectors'
+          git push origin HEAD:main
