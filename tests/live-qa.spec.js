@@ -11,13 +11,20 @@ function collectRuntimeErrors(page){
 
 async function open(page,path='/'){
   let last;
-  for(let i=0;i<6;i++){
+  for(let i=0;i<4;i++){
     try{
-      const res=await page.goto(BASE+path,{waitUntil:'networkidle',timeout:30000});
-      if(res&&res.ok()) return res;
+      const res=await page.goto(BASE+path,{waitUntil:'domcontentloaded',timeout:15000});
+      if(res&&res.ok()){
+        // Give first-party scripts a short deterministic window to hydrate/render.
+        await page.waitForTimeout(350);
+        return res;
+      }
       last=new Error('HTTP '+(res?res.status():'no response'));
-    }catch(e){last=e;}
-    await page.waitForTimeout(5000);
+    }catch(e){
+      last=e;
+      console.log('Navigation attempt '+(i+1)+' failed for '+path+': '+e.message);
+    }
+    if(i<3)await page.waitForTimeout(1500);
   }
   throw last;
 }
@@ -59,6 +66,7 @@ test.describe('MarocVows production visual QA',()=>{
   test('canonical service directory is populated from real supply',async({page})=>{
     const errors=collectRuntimeErrors(page);
     await open(page,'/');
+    await expect(page.locator('#categoryFilter')).toBeVisible();
     const values=await page.locator('#categoryFilter option').evaluateAll(opts=>opts.map(o=>o.value));
     expect(values).toContain('all');
     expect(values).toContain('caterer');
@@ -121,6 +129,7 @@ test.describe('MarocVows production visual QA',()=>{
     await page.setViewportSize({width:390,height:844});
     const errors=collectRuntimeErrors(page);
     await open(page,'/');
+    await expect(page.locator('body')).toContainText('MarocVows');
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
     expect(overflow).toBeLessThanOrEqual(2);
     await expect(page.locator('#language')).toBeVisible();
