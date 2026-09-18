@@ -74,5 +74,16 @@ function renderDrawer(){
 }
 function renderAll(){document.querySelector('.service-discovery')?.remove();renderCategoryDiscovery();enhanceCards();enhanceProfile();renderDrawer();window.MarocVowsI18n?.apply(document);}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderAll);else renderAll();document.querySelector('#language')?.addEventListener('change',()=>setTimeout(renderAll,0));document.addEventListener('marocvows:languagechange',()=>setTimeout(renderAll,0));
-new MutationObserver(()=>{enhanceCards();renderDrawer();}).observe(document.documentElement,{subtree:true,childList:true});
+let observerScheduled=false;
+const observerOptions={subtree:true,childList:true};
+const observer=new MutationObserver(()=>{
+  if(observerScheduled)return;
+  observerScheduled=true;
+  requestAnimationFrame(()=>{
+    observerScheduled=false;
+    observer.disconnect();
+    try{enhanceCards();renderDrawer();}finally{observer.observe(document.documentElement,observerOptions);}
+  });
+});
+observer.observe(document.documentElement,observerOptions);
 })();
