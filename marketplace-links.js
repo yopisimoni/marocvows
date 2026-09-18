@@ -36,6 +36,16 @@ function linkCityHeadings(){
 }
 const run=()=>{enhanceCards();linkCityHeadings();window.MarocVowsI18n?.apply(document);};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{run();setTimeout(run,400);});else{run();setTimeout(run,400);}
-const observer=new MutationObserver(()=>run());
-observer.observe(document.documentElement,{childList:true,subtree:true});
+let observerScheduled=false;
+const observerOptions={childList:true,subtree:true};
+const observer=new MutationObserver(()=>{
+  if(observerScheduled)return;
+  observerScheduled=true;
+  requestAnimationFrame(()=>{
+    observerScheduled=false;
+    observer.disconnect();
+    try{run();}finally{observer.observe(document.documentElement,observerOptions);}
+  });
+});
+observer.observe(document.documentElement,observerOptions);
 })();
