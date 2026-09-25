@@ -51,6 +51,12 @@
 
 
 ## Localization architecture
+- Every authority-content pillar must ship in EN, AR, FR and ES before it is considered complete.
+- For indexable authority articles, use distinct crawlable URLs per language plus reciprocal hreflang tags; do not rely only on client-side text swapping for SEO-critical content.
+- Arabic authority pages must use `lang="ar"` and `dir="rtl"`.
+- Each language version must have its own localized title, meta description, visible copy and Article/FAQ structured data where applicable.
+- Language switches on authority pages must be plain crawlable links between all four versions.
+
 - Shared public-site language layer: `/i18n.js`.
 - Supported languages: English, Arabic, French and Spanish.
 - Shared preference key: `marocvows-lang`.
