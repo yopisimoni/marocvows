@@ -1,0 +1,19 @@
+{
+  "site": "MarocVows",
+  "url": "https://www.marocvows.com/",
+  "service": "Wedding and event provider discovery in Morocco",
+  "capabilities": [
+    "Search providers by city and service",
+    "View static provider profile pages",
+    "Compare available public contact and location details",
+    "Request wedding-planning guidance",
+    "Submit a provider listing for review"
+  ],
+  "current_cities": [
+    "Khénifra",
+    "Fès",
+    "Meknès"
+  ],
+  "contact": "hello@marocvows.com",
+  "updated": "2026-09-25"
+}

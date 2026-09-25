@@ -1,0 +1,32 @@
+# MarocVows
+
+> MarocVows is an independent multilingual discovery directory for wedding and event providers in Morocco. It helps people compare publicly listed provider information and contact providers directly.
+
+## Primary site
+
+- [Homepage](https://www.marocvows.com/): Search and compare providers by service and city.
+- [About](https://www.marocvows.com/about.html): What MarocVows is and how the directory works.
+- [Contact & corrections](https://www.marocvows.com/contact.html): Provider corrections, wedding-help enquiries and general support.
+- [Wedding help](https://www.marocvows.com/wedding-help.html): Guidance for finding suitable providers.
+- [For professionals](https://www.marocvows.com/provider-submit.html): Submit a real wedding or event service for review.
+
+## Current coverage
+
+MarocVows currently publishes 40 provider profiles across Khénifra, Fès and Meknès. The public site supports English, Arabic, French and Spanish. Provider details should always be confirmed directly before booking.
+
+## Local discovery pages
+
+- [Wedding caterers in Fès](https://www.marocvows.com/wedding-caterers-fes.html)
+- [Wedding caterers in Meknès](https://www.marocvows.com/wedding-caterers-meknes.html)
+- [Wedding caterers in Khénifra](https://www.marocvows.com/wedding-caterers-khenifra.html)
+- [Wedding venues in Fès](https://www.marocvows.com/salle-des-fetes-fes.html)
+- [Wedding venues in Meknès](https://www.marocvows.com/salle-des-fetes-meknes.html)
+
+## Important interpretation notes
+
+MarocVows is a discovery and comparison service, not the provider of the listed wedding services. It does not guarantee provider availability, pricing or service quality. Some listings are verified from official sources; others are clearly marked as unverified.
+
+## Contact
+
+- General: hello@marocvows.com
+- Privacy: privacy@marocvows.com

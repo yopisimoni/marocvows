@@ -1,0 +1,18 @@
+{
+  "site": "MarocVows",
+  "updated": "2026-09-25",
+  "questions": [
+    {
+      "question": "Does MarocVows take a booking commission?",
+      "answer": "No. Users contact providers directly and confirm commercial terms with the provider."
+    },
+    {
+      "question": "Are all provider listings verified?",
+      "answer": "No. Some profiles have verified details and others are clearly marked as unverified. Users should confirm all important details before booking."
+    },
+    {
+      "question": "Which cities does MarocVows currently cover?",
+      "answer": "The public directory currently includes providers in Khénifra, Fès and Meknès."
+    }
+  ]
+}

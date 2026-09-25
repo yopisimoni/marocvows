@@ -1,0 +1,26 @@
+{
+  "name": "MarocVows",
+  "url": "https://www.marocvows.com/",
+  "description": "Independent multilingual discovery directory for wedding and event providers in Morocco.",
+  "languages": [
+    "en",
+    "ar",
+    "fr",
+    "es"
+  ],
+  "current_coverage": {
+    "provider_profiles": 40,
+    "cities": [
+      "Khénifra",
+      "Fès",
+      "Meknès"
+    ]
+  },
+  "model": "Direct provider discovery and contact; no booking commission.",
+  "verification": "Some listings are verified from official sources; others are marked unverified.",
+  "contact": {
+    "general": "hello@marocvows.com",
+    "privacy": "privacy@marocvows.com"
+  },
+  "updated": "2026-09-25"
+}
