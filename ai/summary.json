@@ -9,11 +9,15 @@
     "es"
   ],
   "current_coverage": {
-    "provider_profiles": 40,
+    "provider_profiles": 49,
     "cities": [
       "Khénifra",
       "Fès",
-      "Meknès"
+      "Meknès",
+      "Casablanca",
+      "Marrakech",
+      "Rabat",
+      "Tangier"
     ]
   },
   "model": "Direct provider discovery and contact; no booking commission.",

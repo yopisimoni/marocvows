@@ -12,7 +12,7 @@
 
 ## Current coverage
 
-MarocVows currently publishes 40 provider profiles across Khénifra, Fès and Meknès. The public site supports English, Arabic, French and Spanish. Provider details should always be confirmed directly before booking.
+MarocVows currently publishes 49 provider profiles across Khénifra, Fès, Meknès, Casablanca, Marrakech, Rabat and Tangier. The public site supports English, Arabic, French and Spanish. Provider details should always be confirmed directly before booking.
 
 ## Local discovery pages
 
