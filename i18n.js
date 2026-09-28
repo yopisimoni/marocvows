@@ -280,6 +280,20 @@ es:{
 "Do not include passwords, payment-card details or unnecessary identity documents in a request. If the account-based wedding-help workflow is unavailable, use the public directory and planning pages instead.":"No incluyas contraseñas, datos de tarjetas ni documentos de identidad innecesarios. Si la ayuda mediante cuenta no está disponible, usa el directorio público y las páginas de planificación."
 }};
 Object.entries(consistencyMessages2).forEach(([code,map])=>Object.assign(messages[code],map));
+const photographerGuideMessages={
+ar:{
+"Morocco wedding photographer guide 2026":"دليل مصور الأعراس في المغرب 2026",
+"Compare coverage, deliverables, editing, video, travel and the questions worth asking before you book.":"قارن التغطية والتسليم والتعديل والفيديو والتنقل والأسئلة المهمة قبل الحجز."
+},
+fr:{
+"Morocco wedding photographer guide 2026":"Guide photographe mariage Maroc 2026",
+"Compare coverage, deliverables, editing, video, travel and the questions worth asking before you book.":"Comparez la couverture, les livrables, la retouche, la vidéo, les déplacements et les questions à poser avant de réserver."
+},
+es:{
+"Morocco wedding photographer guide 2026":"Guía fotógrafo de boda Marruecos 2026",
+"Compare coverage, deliverables, editing, video, travel and the questions worth asking before you book.":"Compara cobertura, entregables, edición, vídeo, desplazamiento y las preguntas importantes antes de reservar."
+}};
+Object.entries(photographerGuideMessages).forEach(([code,map])=>Object.assign(messages[code],map));
 function currentLang(){
   const stored=localStorage.getItem(STORAGE_KEY);
   if(supported.includes(stored))return stored;
