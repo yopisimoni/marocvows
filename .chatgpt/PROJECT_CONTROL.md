@@ -51,6 +51,12 @@
 
 
 ## Localization architecture
+- Never partially translate a page. A public page must render in one coherent language at a time.
+- Proper business names, postal addresses, phone numbers, URLs and official brand names are identifiers and may remain unchanged.
+- Pages using client-side language switching must declare `data-i18n-complete="true"` only after every visible UI/content string is covered.
+- Pages without complete dictionaries must remain in their declared source language rather than applying a partial stored-language translation.
+- Authority articles use dedicated FR/EN/AR/ES URLs with reciprocal hreflang.
+
 - Every authority-content pillar must ship in EN, AR, FR and ES before it is considered complete.
 - For indexable authority articles, use distinct crawlable URLs per language plus reciprocal hreflang tags; do not rely only on client-side text swapping for SEO-critical content.
 - Arabic authority pages must use `lang="ar"` and `dir="rtl"`.
