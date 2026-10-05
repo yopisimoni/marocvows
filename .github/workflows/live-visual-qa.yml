@@ -17,6 +17,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Check public JavaScript syntax
+        run: |
+          for file in *.js; do node --check "$file"; done
+
       - name: Wait for this commit to deploy to GitHub Pages
         env:
           GH_TOKEN: ${{ github.token }}
@@ -79,11 +88,6 @@ jobs:
           wc -c /tmp/index-get-body 2>/dev/null || true
           head -c 300 /tmp/index-get-body 2>/dev/null || true
           echo
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
 
       - name: Install Playwright
         run: |
