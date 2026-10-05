@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-05",
+  "scope": "Public/static pages; no database changes",
+  "staticAudit": {
+    "pages": 93,
+    "missing_links": [],
+    "missing_anchors": [],
+    "metadata_flags": [
+      {
+        "page": "compare.html",
+        "title": true,
+        "h1": 1,
+        "viewport": true,
+        "canonicals": []
+      },
+      {
+        "page": "404.html",
+        "title": true,
+        "h1": 1,
+        "viewport": true,
+        "canonicals": []
+      },
+      {
+        "page": "vendor-profile.html",
+        "title": true,
+        "h1": 1,
+        "viewport": true,
+        "canonicals": []
+      },
+      {
+        "page": "google62673b472d2069cf.html",
+        "title": false,
+        "h1": 0,
+        "viewport": false,
+        "canonicals": []
+      },
+      {
+        "page": "welcome.html",
+        "title": true,
+        "h1": 1,
+        "viewport": true,
+        "canonicals": []
+      }
+    ]
+  },
+  "productionVerification": "Deployment queued; source fixes are not yet confirmed live",
+  "limitations": [
+    "Mobile browser and Lighthouse not verified in this environment"
+  ],
+  "codeCommit": "b12a93fcaa3733a9f97ec300ccb87d6337f0ca42",
+  "confirmedProductionDefect": "app.js SyntaxError prevented directory rendering, complete language switching and portal visibility controls",
+  "fix": "Repaired EN/AR/ES dictionary string delimiters and braces; added missing French profile labels; added public JS syntax guard to CI",
+  "tests": {
+    "publicJavaScriptFiles": 17,
+    "syntax": "passed"
+  },
+  "auditExceptions": [
+    "Utility/noindex pages and Google verification page lack canonical tags intentionally"
+  ],
+  "deploymentRun": "https://github.com/yopisimoni/marocvows/actions/runs/37371317065"
+}
