@@ -103,6 +103,10 @@ def main():
     except OSError: pass
     con=sqlite3.connect(db)
     con.executescript(SCHEMA)
+    # Upgrade databases created by the first pilot without deleting records.
+    columns = {row[1] for row in con.execute("PRAGMA table_info(candidates)")}
+    if "review_priority" not in columns:
+        con.execute("ALTER TABLE candidates ADD COLUMN review_priority TEXT NOT NULL DEFAULT 'low'")
     stamp=datetime.now(timezone.utc).isoformat()
     imported=0
     for element in data["elements"]:
