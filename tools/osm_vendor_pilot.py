@@ -8,6 +8,7 @@ No customer data, individual contact names or OSM contributor metadata are store
 import argparse
 import json
 import os
+import re
 import sqlite3
 import sys
 import urllib.parse
@@ -21,7 +22,7 @@ CITIES = {
     "meknes": (33.89, -5.55, 0.130),
 }
 # Broad commercial categories are only candidate leads, not proof of wedding services.
-FILTER = '["name"]["shop"~"^(photo|florist|jewelry|clothes|beauty)$"]'
+FILTER = '["name"]["shop"~"^(photo|florist|jewelry|beauty)$"]'
 OTHER = '["name"]["amenity"~"^(events_venue|restaurant|community_centre)$"]'
 TOURISM = '["name"]["tourism"="hotel"]'
 SCHEMA = """
@@ -33,6 +34,7 @@ CREATE TABLE IF NOT EXISTS candidates (
     lat REAL, lon REAL,
     website TEXT,
     source TEXT NOT NULL DEFAULT 'OpenStreetMap contributors (ODbL)',
+    review_priority TEXT NOT NULL DEFAULT 'low',
     status TEXT NOT NULL DEFAULT 'unverified'
        CHECK(status IN ('unverified','reviewing','verified','rejected')),
     first_seen TEXT NOT NULL,
@@ -60,6 +62,15 @@ def fetch(city, email):
     with urllib.request.urlopen(req, timeout=65) as response:
         return json.load(response)
 
+def priority(name, category, tags):
+    """Heuristic review queue only: not proof of wedding capability."""
+    text = " ".join((name, tags.get("description", ""), tags.get("name:fr", ""), tags.get("name:ar", ""))).lower()
+    if category == "amenity:events_venue" or re.search(r"mariage|wedding|traiteur|salle des f[eê]tes|قاعة|أعراس|حفلات", text):
+        return "high"
+    if category in ("shop:photo","shop:florist","shop:jewelry","shop:beauty"):
+        return "medium"
+    return "low"
+
 def normalize(record, city):
     tags = record.get("tags") or {}
     name = (tags.get("name") or "").strip()
@@ -72,7 +83,7 @@ def normalize(record, city):
     if not website.startswith(("https://","http://")):
         website = ""
     return (f'{record["type"]}/{record["id"]}',city,name[:200],category,
-            center.get("lat"),center.get("lon"),website[:300])
+            center.get("lat"),center.get("lon"),website[:300],priority(name,category,tags))
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
@@ -98,10 +109,11 @@ def main():
         row=normalize(element,args.city)
         if not row: continue
         con.execute("""INSERT INTO candidates
-            (osm_key,city,name,category,lat,lon,website,first_seen,last_seen)
-            VALUES(?,?,?,?,?,?,?,?,?)
+            (osm_key,city,name,category,lat,lon,website,review_priority,first_seen,last_seen)
+            VALUES(?,?,?,?,?,?,?,?,?,?)
             ON CONFLICT(osm_key) DO UPDATE SET
-            last_seen=excluded.last_seen
+            last_seen=excluded.last_seen,
+            review_priority=excluded.review_priority
             """,(*row,stamp,stamp))
         imported+=1
     con.commit()
